@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=BlinkAsm.X
+PROJECTNAME=Pic-Led-Controller
 
 # Active Configuration
 DEFAULTCONF=default

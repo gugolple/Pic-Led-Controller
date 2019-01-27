@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>BlinkAsm</name>
+            <name>pic-led-controller</name>
             <creation-uuid>9590f3d2-19f2-4d77-9c6c-9d49a43e0766</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions/>
