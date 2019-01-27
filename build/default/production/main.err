@@ -26,6 +26,6 @@ Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 304 : Regis
 Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 305 : Register in operand not in bank 0.  Ensure that bank bits are correct.
 Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 307 : Found label after column 1. (STABILIZATION)
 Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 308 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 327 : Found label after column 1. (INITIALIZE)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 348 : Found label after column 1. (LOGIC_LOOP)
-Warning[205] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 370 : Found directive in column 1. (END)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 324 : Found label after column 1. (INITIALIZE)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 337 : Found label after column 1. (LOGIC_LOOP)
+Warning[205] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 359 : Found directive in column 1. (END)
