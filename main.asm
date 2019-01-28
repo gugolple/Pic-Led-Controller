@@ -25,10 +25,19 @@ INDEXED_COLOR	equ 0x65
 TEMP_COLOR	equ 0x66
 DISPLAY_COLOR	equ 0x67
 CURRENT_DISPLAY_INDEX	equ 0x68
+
 ;REUSE FOR REVERSE
 REVERSE_TEMP	equ 0x60
 REVERSE_RET	equ 0x61
 REVERSE_COUNT	equ 0x62
+
+MAX_ROTATIONS  equ	0x03		    ;0-3 = 4 MAQUING ROTATIONS
+;REUSE FOR GET_PIECES
+PIECE_TEMP	equ 0x60
+SIZE_TEMP	equ 0x61
+PIECE_START	equ 0x62
+PIECE_TABLE	equ 0x63
+
 	
 ;COMMONS BECAUSE BETWEEN 0x70-0x7F
 LAST_STATE  equ 0x7F
@@ -39,7 +48,8 @@ PIECE_2	    equ	0x7B
 PIECE_1	    equ	0x7A
 PIECE_0	    equ	0x79
 PIECE_TYPE  equ	0x78
-PIECE_ROT   equ	0x77
+hiB	    equ 0x77
+lowB	    equ 0x76
   
   
 ;MAP OF DISPLAY MEMORY, MUST NOT REUSE
@@ -57,19 +67,86 @@ COLORS_BLUE dt	0x00,0x00,0x00,0x20,0x00,0x20,0x20,0x20,0x00,0x00,0x10,0x00,0x10,
 COLOR_BLACK equ 0x00 ; POSITION OF BLACK
  
 ;LISTA DE BLOQUES
-;NORMALIZADOS A TODOS 4 rotaciones
-;BLOCK_LINE_SIZE	    dt	
-;BLOCK_SQUARE_SIZE   dt	
-;BLOCK_L_SIZE	    dt	
-;BLOCK_IL_SIZE	    dt	
-;BLOCK_T_SIZE	    dt	
-;BLOCK_Z_SIZE	    dt	
-;BLOCK_IZ_SIZE	    dt	
  
 ;ORDER:	LINE,SQUARE,L,IL,T,Z,IZ
 BLOCK_SIZES	dt  0x01,0x04,0x01,0x04,    0x02, 0x02, 0x02, 0x02,	0x03,0x02,0x03,0x02,    0x03,0x02,0x03,0x02,    0x02,0x03,0x02,0x03,    0x02,0x03, 0x02,0x03,   0x02,0x03, 0x02,0x03
+BLOCK_STARTS	dt  0x00,0x01,0x05,0x06,    0x0a, 0x0c, 0x0e, 0x10,	0x12,0x15,0x17,0x1a,	0x1c,0x1f,0x21,0x24,	0x26,0x28,0x2b,0x2d,	0x30,0x32, 0x35,0x37,	0x3a,0x3c, 0x3f,0x41
 BLOCK_ROTATIONS	dt  0x0F, 0x01,0x01,0x01,0x01, 0x0F, 0x01,0x01,0x01,0x01,  0x03,0x03, 0x03,0x03, 0x03,0x03, 0x03,0x03,	 0x01,0x01,0x03, 0x04,0x07, 0x03,0x02,0x02, 0x07,0x01,	0x02,0x02,0x03, 0x07,0x04, 0x03,0x01,0x01, 0x01,0x07,	0x02,0x07, 0x02,0x03,0x02, 0x07,0x02, 0x01,0x03,0x01,	0x03,0x06, 0x02,0x03,0x01, 0x03,0x06, 0x02,0x03,0x01,	0x06,0x03, 0x01,0x03,0x02, 0x06,0x03, 0x01,0x03,0x02
- 
+
+GET_SIZE
+    MOVWF   PIECE_TABLE		;PUT INDEX OUT OF WAY
+    MOVLW   HIGH BLOCK_SIZES	;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		;SET PAG
+    MOVF    PIECE_TABLE,W	;RECOVER INDEX
+    ADDLW   BLOCK_SIZES		;ADD LOW
+    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+
+GET_PIECE_START
+    MOVWF   PIECE_TABLE		;PUT INDEX OUT OF WAY
+    MOVLW   HIGH BLOCK_STARTS	;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		;SET PAG
+    MOVF    PIECE_TABLE,W	;RECOVER INDEX
+    ADDLW   BLOCK_STARTS	;ADD LOW
+    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+    
+GET_PIECE_ROTATION
+    MOVLW   HIGH BLOCK_ROTATIONS    ;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		    ;SET PAG
+    MOVF    PIECE_START,W	    ;RECOVER INDEX
+    ADDLW   BLOCK_ROTATIONS	    ;ADD LOW
+    BTFSC   STATUS,C		    ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+
+GET_PIECE
+    ANDLW   0x1F		;MAX 32
+    MOVWF   PIECE_TEMP		;ACTUAL PIECE I WANT, ROTATION INCLUDED
+    SUBLW   .28
+    BTFSC   STATUS,C
+    MOVF    PIECE_TEMP,W
+    
+    CALL    GET_SIZE		;SIZE OF PIECE
+    MOVWF   PIECE_SIZE
+    MOVWF   SIZE_TEMP
+    
+    MOVF    PIECE_TEMP,W
+    CALL    GET_PIECE_START	;WHERE IT STARTS
+    MOVWF   PIECE_START		
+    
+    MOVLW   PIECE_0
+    MOVWF   FSR
+    
+    GET_PIECE_LOOP
+	CALL	GET_PIECE_ROTATION
+	MOVWF	INDF
+	INCF	FSR,F
+	INCF	PIECE_START,F
+	DECFSZ	SIZE_TEMP
+	GOTO	GET_PIECE_LOOP
+	
+    RETLW   0x00
+
+Random       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
+             IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
+             BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
+             COMF   hiB                   
+             MOVLW  0x80                 ; We want to XOR hiB.7, hiB.6, hiB.4
+             BTFSC  hiB,d'6'             ; and lowB.3 together in W. Rather than
+             XORWF  hiB                  ; try to line up these bits, we just
+             BTFSC  hiB,d'4'             ; check to see whether a bit is a 1. If it
+             XORWF  hiB                  ; is, XOR 80h into hiB. If it isn't,
+             BTFSC  lowB,d'3'            ; do nothing. When we're done, the
+             XORWF  hiB                  ; XOR of the 4 bits will be in hiB.7.
+             RLF    hiB,W                  ; Move hiB.7 into carry. 
+             RLF    lowB                   ; Rotate c into lowB.0, lowB.7 into c. 
+             RLF    hiB                    ; Rotate c into hiB.0. 
+	     MOVF   lowB,W
+             RETURN
+	     
 REVERSE_BYTE
     MOVWF   REVERSE_TEMP
     MOVLW   0x08
