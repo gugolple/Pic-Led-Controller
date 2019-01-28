@@ -197,13 +197,13 @@ BLOCK_ROTATIONS
     RETLW 0x03
     RETLW 0x02
 
-BLOCK_SIZES	dt  0x01,0x04,0x01,0x04,    0x02, 0x02, 0x02, 0x02,	;LI,S
-		dt  0x03,0x02,0x03,0x02,    0x03,0x02,0x03,0x02,	;L,IL
-		dt  0x02,0x03,0x02,0x03,    0x02,0x03, 0x02,0x03,	;T,Z
+BLOCK_SIZES	dt  0x01,0x04,0x01,0x04,    0x02, 0x02, 0x02, 0x02	;LI,S
+		dt  0x03,0x02,0x03,0x02,    0x03,0x02,0x03,0x02		;L,IL
+		dt  0x02,0x03,0x02,0x03,    0x02,0x03, 0x02,0x03	;T,Z
 		dt  0x02,0x03, 0x02,0x03				;IZ
-BLOCK_STARTS	dt  0x00,0x01,0x05,0x06,    0x0a, 0x0c, 0x0e, 0x10,	;LI,S
-		dt  0x12,0x15,0x17,0x1a,    0x1c,0x1f,0x21,0x24,	;L,IL
-		dt  0x26,0x28,0x2b,0x2d,    0x30,0x32, 0x35,0x37,	;T,Z
+BLOCK_STARTS	dt  0x00,0x01,0x05,0x06,    0x0a, 0x0c, 0x0e, 0x10	;LI,S
+		dt  0x12,0x15,0x17,0x1a,    0x1c,0x1f,0x21,0x24		;L,IL
+		dt  0x26,0x28,0x2b,0x2d,    0x30,0x32, 0x35,0x37	;T,Z
 		dt  0x3a,0x3c, 0x3f,0x41				;IZ
 		    
 GET_SIZE
@@ -261,18 +261,35 @@ GET_PIECE
 	
     RETLW   0x00
     
-ROTATE	RETURN
+ROTATE	
+    MOVF    PIECE_TYPE,W
+    ANDLW   0x03
+    XORLW   0x03	    ;1 xor 1 is 0, so if all 2 low bits are 1 then
+    BTFSC   STATUS,Z	    ; i need to reset to 0, otherwise if 0 is clear
+    GOTO    ROTATION_RESET  ;just add 1
+    
+    INCF    PIECE_TYPE,F    ;
+    RETLW   0x00
+    
+    ROTATION_RESET
+    MOVF    PIECE_TYPE,W    ;Get the number and and it with all but 2 lowest
+    ANDLW   0xFC	    ;Put back where it came from
+    MOVWF   PIECE_TYPE
+    RETLW   0x00
 LEFT	
-    ;DECF    PIECE_TYPE,F
-    RETURN
-DOWN	RETURN
-RIGHT
+    MOVF    LAST_POS_X,F
+    BTFSS   STATUS,Z
+    DECF    LAST_POS_X,F
+    RETLW   0x00
+DOWN	
     INCF    PIECE_TYPE,F
-    INCF    C0,F
-    INCF    C1,F
-    INCF    C2,F
-    INCF    C3,F
-    RETURN
+    RETLW   0x00
+RIGHT
+    MOVF    LAST_POS_X,W
+    XORLW   0x07
+    BTFSS   STATUS,Z
+    INCF    LAST_POS_X,F
+    RETLW   0x00
 
 PRINT_PIECE	
     MOVF    PIECE_TYPE,W
@@ -621,8 +638,8 @@ START
 	MOVF	LAST_STATE,W
 	ANDLW	0x80
 	XORWF	TEMP_REG,W
-	;BTFSS	STATUS,Z
-	;CALL	ROTATE
+	BTFSS	STATUS,Z
+	CALL	ROTATE
 	
 	MOVF	TEMP_STATE,W
 	ANDLW	0x40		;CHECK RC6
@@ -630,8 +647,8 @@ START
 	MOVF	LAST_STATE,W
 	ANDLW	0x40
 	XORWF	TEMP_REG,W
-	;BTFSS	STATUS,Z
-	;CALL	LEFT
+	BTFSS	STATUS,Z
+	CALL	RIGHT
 	
 	MOVF	TEMP_STATE,W
 	ANDLW	0x20		;CHECK RC5
@@ -639,8 +656,8 @@ START
 	MOVF	LAST_STATE,W
 	ANDLW	0x20
 	XORWF	TEMP_REG,W
-	;BTFSS	STATUS,Z
-	;CALL	DOWN
+	BTFSS	STATUS,Z
+	CALL	DOWN
 	
 	MOVF	TEMP_STATE,W
 	ANDLW	0x10		;CHECK RC4
@@ -649,7 +666,7 @@ START
 	ANDLW	0x10
 	XORWF	TEMP_REG,W
 	BTFSS	STATUS,Z
-	CALL	RIGHT
+	CALL	LEFT
 	
 	;CALL	PRINT_PIECE
 	
@@ -668,6 +685,9 @@ START
 	MOVWF	B2
 	MOVF	PIECE_3,W
 	MOVWF	B3
+	
+	MOVF	LAST_POS_X,W
+	MOVWF	B30
 	
 	END_LOGIC
 	MOVF	TEMP_STATE,W
