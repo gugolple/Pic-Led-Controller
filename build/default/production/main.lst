@@ -1,4 +1,4 @@
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  1
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   00000063            00040 TABLE_TEMPORAL  equ 0x63
   00000064            00041 CURRENT_COLOR   equ 0x64
   00000065            00042 INDEXED_COLOR   equ 0x65
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  2
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -116,7 +116,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
        3408 
 0015   3400 3420 3410 00089 COLORS_GREEN dt 0x00,0x20,0x10,0x08,0x00,0x00,0x20,0x10,0x20,0x10,0x20,0x10,0x00,0x00,0x00,0x00
        3408 3400 3400 
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  3
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -175,7 +175,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 004B   3407           00131     RETLW 0x07
                       00132     
 004C   3403           00133     RETLW 0x03
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  4
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -234,7 +234,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00184     
                       00185     ;IZ
 006F   3406           00186     RETLW 0x06
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  5
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -293,7 +293,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 00BC   0863           00223     MOVF    PIECE_TABLE,W       ;RECOVER INDEX
 00BD   3E??           00224     ADDLW   BLOCK_STARTS        ;ADD LOW
 00BE   1803           00225     BTFSC   STATUS,C            ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  6
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  6
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -314,549 +314,587 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 00C8                  00238 GET_PIECE
 00C8   0876           00239     MOVF    PIECE_TYPE,W
 00C9   391F           00240     ANDLW   0x1F                ;MAX 32
-00CA   00E0           00241     MOVWF   PIECE_TEMP          ;ACTUAL PIECE I WANT, ROTATION INCLUDED
-                      00242     
-00CB   2???           00243     CALL    GET_SIZE            ;SIZE OF PIECE
-00CC   00FB           00244     MOVWF   PIECE_SIZE
-00CD   00E1           00245     MOVWF   SIZE_TEMP
-                      00246     
-00CE   0860           00247     MOVF    PIECE_TEMP,W
-00CF   2???           00248     CALL    GET_PIECE_START     ;WHERE IT STARTS
-00D0   00E2           00249     MOVWF   PIECE_START         
-                      00250     
-00D1   3077           00251     MOVLW   PIECE_0
-00D2   0084           00252     MOVWF   FSR
-                      00253     
+00CA   00F6           00241     MOVWF   PIECE_TYPE          ;ACTUAL PIECE I WANT, ROTATION INCLUDED
+00CB   3C1C           00242     SUBLW   .28
+00CC   00FC           00243     MOVWF   LAST_POS_Y
+00CD   1903           00244     BTFSC   STATUS,Z            
+00CE   01F6           00245     CLRF    PIECE_TYPE
+00CF   0876           00246     MOVF    PIECE_TYPE,W
+                      00247     
+00D0   2???           00248     CALL    GET_SIZE            ;SIZE OF PIECE
+00D1   00FB           00249     MOVWF   PIECE_SIZE
+00D2   00E1           00250     MOVWF   SIZE_TEMP
+                      00251     
+00D3   0876           00252     MOVF    PIECE_TYPE,W
+00D4   2???           00253     CALL    GET_PIECE_START     ;WHERE IT STARTS
+00D5   00E2           00254     MOVWF   PIECE_START         
+                      00255     
+00D6   3077           00256     MOVLW   PIECE_0
+00D7   0084           00257     MOVWF   FSR
+                      00258     
 Warning[207]: Found label after column 1. (GET_PIECE_LOOP)
-00D3                  00254     GET_PIECE_LOOP
-00D3   2???           00255         CALL    GET_PIECE_ROTATION
-00D4   0080           00256         MOVWF   INDF
-00D5   0A84           00257         INCF    FSR,F
-00D6   0AE2           00258         INCF    PIECE_START,F
-00D7   0BE1           00259         DECFSZ  SIZE_TEMP,F
-00D8   2???           00260         GOTO    GET_PIECE_LOOP
-                      00261         
-00D9   3400           00262     RETLW   0x00
-                      00263     
-00DA                  00264 ROTATE  
-00DA   0876           00265     MOVF    PIECE_TYPE,W
-00DB   3903           00266     ANDLW   0x03
-00DC   3A03           00267     XORLW   0x03            ;1 xor 1 is 0, so if all 2 low bits are 1 then
-00DD   1903           00268     BTFSC   STATUS,Z        ; i need to reset to 0, otherwise if 0 is clear
-00DE   2???           00269     GOTO    ROTATION_RESET  ;just add 1
-                      00270     
-00DF   0AF6           00271     INCF    PIECE_TYPE,F    ;
-00E0   3400           00272     RETLW   0x00
-                      00273     
+00D8                  00259     GET_PIECE_LOOP
+00D8   2???           00260         CALL    GET_PIECE_ROTATION
+00D9   0080           00261         MOVWF   INDF
+00DA   0A84           00262         INCF    FSR,F
+00DB   0AE2           00263         INCF    PIECE_START,F
+00DC   0BE1           00264         DECFSZ  SIZE_TEMP,F
+00DD   2???           00265         GOTO    GET_PIECE_LOOP
+                      00266         
+00DE   3400           00267     RETLW   0x00
+                      00268     
+00DF                  00269 ROTATE  
+00DF   0876           00270     MOVF    PIECE_TYPE,W
+00E0   3903           00271     ANDLW   0x03
+00E1   3A03           00272     XORLW   0x03            ;1 xor 1 is 0, so if all 2 low bits are 1 then
+00E2   1903           00273     BTFSC   STATUS,Z        ; i need to reset to 0, otherwise if 0 is clear
+00E3   2???           00274     GOTO    ROTATION_RESET  ;just add 1
+                      00275     
+00E4   0AF6           00276     INCF    PIECE_TYPE,F    ;
+00E5   3400           00277     RETLW   0x00
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00278     
 Warning[207]: Found label after column 1. (ROTATION_RESET)
-00E1                  00274     ROTATION_RESET
-00E1   0876           00275     MOVF    PIECE_TYPE,W    ;Get the number and and it with all but 2 lowest
-00E2   39FC           00276     ANDLW   0xFC            ;Put back where it came from
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  7
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-00E3   00F6           00277     MOVWF   PIECE_TYPE
-00E4   3400           00278     RETLW   0x00
-00E5                  00279 LEFT    
-00E5   08FD           00280     MOVF    LAST_POS_X,F
-00E6   1D03           00281     BTFSS   STATUS,Z
-00E7   03FD           00282     DECF    LAST_POS_X,F
-00E8   3400           00283     RETLW   0x00
-00E9                  00284 DOWN    
-00E9   0AF6           00285     INCF    PIECE_TYPE,F
-00EA   3400           00286     RETLW   0x00
-00EB                  00287 RIGHT
-00EB   087D           00288     MOVF    LAST_POS_X,W
-00EC   3A07           00289     XORLW   0x07
-00ED   1D03           00290     BTFSS   STATUS,Z
-00EE   0AFD           00291     INCF    LAST_POS_X,F
-00EF   3400           00292     RETLW   0x00
-                      00293 
-00F0                  00294 PRINT_PIECE     
-00F0   0876           00295     MOVF    PIECE_TYPE,W
-00F1   087C           00296     MOVF    LAST_POS_Y,W
-                      00297     
-00F2   087B           00298     MOVF    PIECE_SIZE,W
-00F3   00E1           00299     MOVWF   SIZE_TEMP
+00E6                  00279     ROTATION_RESET
+00E6   0876           00280     MOVF    PIECE_TYPE,W    ;Get the number and and it with all but 2 lowest
+00E7   39FC           00281     ANDLW   0xFC            ;Put back where it came from
+00E8   00F6           00282     MOVWF   PIECE_TYPE
+00E9   3400           00283     RETLW   0x00
+00EA                  00284 LEFT    
+00EA   08FD           00285     MOVF    LAST_POS_X,F
+00EB   1D03           00286     BTFSS   STATUS,Z
+00EC   03FD           00287     DECF    LAST_POS_X,F
+00ED   3400           00288     RETLW   0x00
+00EE                  00289 DOWN    
+00EE   0AF6           00290     INCF    PIECE_TYPE,F
+00EF   3400           00291     RETLW   0x00
+00F0                  00292 RIGHT
+00F0   087D           00293     MOVF    LAST_POS_X,W
+00F1   3A07           00294     XORLW   0x07
+00F2   1D03           00295     BTFSS   STATUS,Z
+00F3   0AFD           00296     INCF    LAST_POS_X,F
+00F4   3400           00297     RETLW   0x00
+                      00298 
+00F5                  00299 PRINT_PIECE     
+00F5   0876           00300     MOVF    PIECE_TYPE,W
+00F6   087C           00301     MOVF    LAST_POS_Y,W
+                      00302     
+00F7   087B           00303     MOVF    PIECE_SIZE,W
+00F8   00E1           00304     MOVWF   SIZE_TEMP
 Warning[207]: Found label after column 1. (PRINT_PIECE_LOOP)
-00F4                  00300     PRINT_PIECE_LOOP
-                      00301         ;RECOVER CURRENT PIECE INTO PIECE_TEMP
-00F4   3076           00302         MOVLW   PIECE_0-1       ;REMOVE 1 FROM MEMORY
-00F5   0761           00303         ADDWF   SIZE_TEMP,W     ;SIZE 0 IS 1
-00F6   0084           00304         MOVWF   FSR
-00F7   0800           00305         MOVF    INDF,W
-00F8   00E0           00306         MOVWF   PIECE_TEMP
-                      00307         ;MOVE TO MEMORY WHERE NEEDED
-00F9   087C           00308         MOVF    LAST_POS_Y,W
-00FA   0761           00309         ADDWF   SIZE_TEMP,W
-00FB   0084           00310         MOVWF   FSR
-00FC   0860           00311         MOVF    PIECE_TEMP,W
-00FD   1804           00312         BTFSC   FSR,0
-00FE   2???           00313         CALL    REVERSE_BYTE
-00FF   0080           00314         MOVWF   INDF
-                      00315         
-0100   0BE1           00316         DECFSZ  SIZE_TEMP,F
-0101   2???           00317         GOTO    PRINT_PIECE_LOOP
-0102   0008           00318     RETURN
-0103   0875           00319 RANDOM       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
-0104   0474           00320              IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
-0105   1903           00321              BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
-0106   09F5           00322              COMF   hiB,F                  
-0107   3080           00323              MOVLW  0x80                 ; We want to XOR hiB.7, hiB.6, hiB.4
-0108   1B75           00324              BTFSC  hiB,d'6'             ; and lowB.3 together in W. Rather than
-0109   06F5           00325              XORWF  hiB,F                  ; try to line up these bits, we just
-010A   1A75           00326              BTFSC  hiB,d'4'             ; check to see whether a bit is a 1. If it
-010B   06F5           00327              XORWF  hiB ,F                 ; is, XOR 80h into hiB. If it isn't,
-010C   19F4           00328              BTFSC  lowB,d'3'            ; do nothing. When we're done, the
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  8
+00F9                  00305     PRINT_PIECE_LOOP
+                      00306         ;RECOVER CURRENT PIECE INTO PIECE_TEMP
+00F9   3076           00307         MOVLW   PIECE_0-1       ;REMOVE 1 FROM MEMORY
+00FA   0761           00308         ADDWF   SIZE_TEMP,W     ;SIZE 0 IS 1
+00FB   0084           00309         MOVWF   FSR
+00FC   0800           00310         MOVF    INDF,W
+00FD   00E0           00311         MOVWF   PIECE_TEMP
+                      00312         ;MOVE TO MEMORY WHERE NEEDED
+00FE   087C           00313         MOVF    LAST_POS_Y,W
+00FF   0761           00314         ADDWF   SIZE_TEMP,W
+0100   0084           00315         MOVWF   FSR
+0101   0860           00316         MOVF    PIECE_TEMP,W
+0102   1804           00317         BTFSC   FSR,0
+0103   2???           00318         CALL    REVERSE_BYTE
+0104   0080           00319         MOVWF   INDF
+                      00320         
+0105   0BE1           00321         DECFSZ  SIZE_TEMP,F
+0106   2???           00322         GOTO    PRINT_PIECE_LOOP
+0107   0008           00323     RETURN
+                      00324 
+                      00325 
+0108   0875           00326 RANDOM       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
+0109   0474           00327              IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
+010A   1903           00328              BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  8
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-010D   06F5           00329              XORWF  hiB,F                  ; XOR of the 4 bits will be in hiB.7.
-010E   0D75           00330              RLF    hiB,W                  ; Move hiB.7 into carry. 
-010F   0DF4           00331              RLF    lowB,F                   ; Rotate c into lowB.0, lowB.7 into c. 
-0110   0DF5           00332              RLF    hiB,F                    ; Rotate c into hiB.0. 
-0111   0874           00333              MOVF   lowB,W
-0112   0008           00334              RETURN
-                      00335              
-0113                  00336 REVERSE_BYTE
-0113   00E0           00337     MOVWF   REVERSE_TEMP
-0114   3008           00338     MOVLW   0x08
-0115   00E2           00339     MOVWF   REVERSE_COUNT
+010B   09F5           00329              COMF   hiB,F                  
+010C   3080           00330              MOVLW  0x80                 ; We want to XOR hiB.7, hiB.6, hiB.4
+010D   1B75           00331              BTFSC  hiB,d'6'             ; and lowB.3 together in W. Rather than
+010E   06F5           00332              XORWF  hiB,F                  ; try to line up these bits, we just
+010F   1A75           00333              BTFSC  hiB,d'4'             ; check to see whether a bit is a 1. If it
+0110   06F5           00334              XORWF  hiB ,F                 ; is, XOR 80h into hiB. If it isn't,
+0111   19F4           00335              BTFSC  lowB,d'3'            ; do nothing. When we're done, the
+0112   06F5           00336              XORWF  hiB,F                  ; XOR of the 4 bits will be in hiB.7.
+0113   0D75           00337              RLF    hiB,W                  ; Move hiB.7 into carry. 
+0114   0DF4           00338              RLF    lowB,F                   ; Rotate c into lowB.0, lowB.7 into c. 
+0115   0DF5           00339              RLF    hiB,F                    ; Rotate c into hiB.0. 
+0116   0874           00340              MOVF   lowB,W
+0117   0008           00341              RETURN
+                      00342              
+0118                  00343 REVERSE_BYTE
+0118   00E0           00344     MOVWF   REVERSE_TEMP
+0119   3008           00345     MOVLW   0x08
+011A   00E2           00346     MOVWF   REVERSE_COUNT
 Warning[207]: Found label after column 1. (REVERSE_LOOP)
-0116                  00340     REVERSE_LOOP
-0116   0CE0           00341         RRF         REVERSE_TEMP,F
-0117   0DE1           00342         RLF         REVERSE_RET,F
-0118   0BE2           00343         DECFSZ  REVERSE_COUNT,F
-0119   2???           00344         GOTO REVERSE_LOOP
-011A   0861           00345     MOVF    REVERSE_RET,W
-011B   0008           00346     RETURN
-                      00347     
-                      00348     
-011C                  00349 GET_GREEN
-011C   00E3           00350     MOVWF   TABLE_TEMPORAL      ;PUT INDEX OUT OF WAY
-011D   30??           00351     MOVLW   HIGH COLORS_GREEN   ;GET HIGH PART OF TABLE
-011E   008A           00352     MOVWF   PCLATH              ;SET PAG
-011F   0863           00353     MOVF    TABLE_TEMPORAL,W    ;RECOVER INDEX
-0120   390F           00354     ANDLW   MAX_COLORS          ;GET MAX 16
-0121   3E??           00355     ADDLW   COLORS_GREEN        ;ADD LOW
-0122   1803           00356     BTFSC   STATUS,C            ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-0123   0A8A           00357     INCF    PCLATH,F
-0124   0082           00358     MOVWF   PCL
-0125                  00359 GET_RED
-0125   00E3           00360     MOVWF   TABLE_TEMPORAL      ;PUT INDEX OUT OF WAY
-0126   30??           00361     MOVLW   HIGH COLORS_RED     ;GET HIGH PART OF TABLE
-0127   008A           00362     MOVWF   PCLATH              ;SET PAGE
-0128   0863           00363     MOVF    TABLE_TEMPORAL,W    ;RECOVER INDEX
-0129   390F           00364     ANDLW   MAX_COLORS          ;GET MAX 16
-012A   3E??           00365     ADDLW   COLORS_RED          ;ADD LOW
-012B   1803           00366     BTFSC   STATUS,C            ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-012C   0A8A           00367     INCF    PCLATH,F
-012D   0082           00368     MOVWF   PCL
-012E                  00369 GET_BLUE
-012E   00E3           00370     MOVWF   TABLE_TEMPORAL      ;PUT INDEX OUT OF WAY
-012F   30??           00371     MOVLW   HIGH COLORS_BLUE    ;GET HIGH PART OF TABLE
-0130   008A           00372     MOVWF   PCLATH              ;SET PAGE
-0131   0863           00373     MOVF    TABLE_TEMPORAL,W    ;RECOVER INDEX
-0132   390F           00374     ANDLW   MAX_COLORS          ;GET MAX 16
-0133   3E??           00375     ADDLW   COLORS_BLUE         ;ADD LOW
-0134   1803           00376     BTFSC   STATUS,C            ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-0135   0A8A           00377     INCF    PCLATH,F
-0136   0082           00378     MOVWF   PCL
-                      00379     
-                      00380     
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE  9
+011B                  00347     REVERSE_LOOP
+011B   0CE0           00348         RRF         REVERSE_TEMP,F
+011C   0DE1           00349         RLF         REVERSE_RET,F
+011D   0BE2           00350         DECFSZ  REVERSE_COUNT,F
+011E   2???           00351         GOTO REVERSE_LOOP
+011F   0861           00352     MOVF    REVERSE_RET,W
+0120   0008           00353     RETURN
+                      00354     
+                      00355     
+0121                  00356 GET_GREEN
+0121   00E3           00357     MOVWF   TABLE_TEMPORAL      ;PUT INDEX OUT OF WAY
+0122   30??           00358     MOVLW   HIGH COLORS_GREEN   ;GET HIGH PART OF TABLE
+0123   008A           00359     MOVWF   PCLATH              ;SET PAG
+0124   0863           00360     MOVF    TABLE_TEMPORAL,W    ;RECOVER INDEX
+0125   390F           00361     ANDLW   MAX_COLORS          ;GET MAX 16
+0126   3E??           00362     ADDLW   COLORS_GREEN        ;ADD LOW
+0127   1803           00363     BTFSC   STATUS,C            ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+0128   0A8A           00364     INCF    PCLATH,F
+0129   0082           00365     MOVWF   PCL
+012A                  00366 GET_RED
+012A   00E3           00367     MOVWF   TABLE_TEMPORAL      ;PUT INDEX OUT OF WAY
+012B   30??           00368     MOVLW   HIGH COLORS_RED     ;GET HIGH PART OF TABLE
+012C   008A           00369     MOVWF   PCLATH              ;SET PAGE
+012D   0863           00370     MOVF    TABLE_TEMPORAL,W    ;RECOVER INDEX
+012E   390F           00371     ANDLW   MAX_COLORS          ;GET MAX 16
+012F   3E??           00372     ADDLW   COLORS_RED          ;ADD LOW
+0130   1803           00373     BTFSC   STATUS,C            ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+0131   0A8A           00374     INCF    PCLATH,F
+0132   0082           00375     MOVWF   PCL
+0133                  00376 GET_BLUE
+0133   00E3           00377     MOVWF   TABLE_TEMPORAL      ;PUT INDEX OUT OF WAY
+0134   30??           00378     MOVLW   HIGH COLORS_BLUE    ;GET HIGH PART OF TABLE
+0135   008A           00379     MOVWF   PCLATH              ;SET PAGE
+0136   0863           00380     MOVF    TABLE_TEMPORAL,W    ;RECOVER INDEX
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE  9
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0137                  00381 PRINT_SCREEN                        ; Only works on bank 0 or 2
-0137   1787           00382     BSF PORTC,RC7                   ; SET OUTPUT HIGH, START RESET
-0138   3050           00383     MOVLW   .80
-0139   00E1           00384     MOVWF   CURRENT_COLUMN
-Warning[207]: Found label after column 1. (SEND_RESET_HIGH)
-013A                  00385     SEND_RESET_HIGH                         ; Reset >50 microseconds
-013A   0BE1           00386         DECFSZ  CURRENT_COLUMN,F            ; Tnstruction 0.4 * 3 (AMOUNT INST) 10MHz
-013B   2???           00387         GOTO SEND_RESET_HIGH                ;  = 1.2 microseconds
-                      00388         
-013C   1387           00389     BCF PORTC,RC7                   ; SET OUTPUT LOW, START RESET
+0137   390F           00381     ANDLW   MAX_COLORS          ;GET MAX 16
+0138   3E??           00382     ADDLW   COLORS_BLUE         ;ADD LOW
+0139   1803           00383     BTFSC   STATUS,C            ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+013A   0A8A           00384     INCF    PCLATH,F
+013B   0082           00385     MOVWF   PCL
+                      00386     
+                      00387     
+013C                  00388 PRINT_SCREEN                        ; Only works on bank 0 or 2
+013C   1787           00389     BSF PORTC,RC7                   ; SET OUTPUT HIGH, START RESET
 013D   3050           00390     MOVLW   .80
 013E   00E1           00391     MOVWF   CURRENT_COLUMN
-Warning[207]: Found label after column 1. (SEND_RESET)
-013F                  00392     SEND_RESET                      ; Reset >50 microseconds
+Warning[207]: Found label after column 1. (SEND_RESET_HIGH)
+013F                  00392     SEND_RESET_HIGH                         ; Reset >50 microseconds
 013F   0BE1           00393         DECFSZ  CURRENT_COLUMN,F            ; Tnstruction 0.4 * 3 (AMOUNT INST) 10MHz
-0140   2???           00394         GOTO SEND_RESET             ;  = 1.2 microseconds
+0140   2???           00394         GOTO SEND_RESET_HIGH                ;  = 1.2 microseconds
                       00395         
-                      00396         
-                      00397     ;BSF        PORTC,RC6
-0141   0000           00398                 NOP
-0142   0000           00399                 NOP
-0143   0000           00400                 NOP
-0144   0000           00401                 NOP
-0145   0000           00402                 NOP
-0146   0000           00403                 NOP
-0147   0000           00404                 NOP
-0148   0000           00405                 NOP
-0149   0000           00406                 NOP
-014A   0000           00407                 NOP
-014B   0000           00408                 NOP
-014C   0000           00409                 NOP        
-                      00410     ;BCF        PORTC,RC6
-                      00411         
-                      00412         
-014D   3020           00413     MOVLW   ARRAY_START             ; START INDIRECT ACCES TO FIRST WORD
-014E   0084           00414     MOVWF   FSR                     
-                      00415     
-014F   3020           00416     MOVLW   SIZE_COL
-0150   00E0           00417     MOVWF   COLUMN_INDEX
+0141   1387           00396     BCF PORTC,RC7                   ; SET OUTPUT LOW, START RESET
+0142   3050           00397     MOVLW   .80
+0143   00E1           00398     MOVWF   CURRENT_COLUMN
+Warning[207]: Found label after column 1. (SEND_RESET)
+0144                  00399     SEND_RESET                      ; Reset >50 microseconds
+0144   0BE1           00400         DECFSZ  CURRENT_COLUMN,F            ; Tnstruction 0.4 * 3 (AMOUNT INST) 10MHz
+0145   2???           00401         GOTO SEND_RESET             ;  = 1.2 microseconds
+                      00402         
+                      00403         
+                      00404     ;BSF        PORTC,RC6
+0146   0000           00405                 NOP
+0147   0000           00406                 NOP
+0148   0000           00407                 NOP
+0149   0000           00408                 NOP
+014A   0000           00409                 NOP
+014B   0000           00410                 NOP
+014C   0000           00411                 NOP
+014D   0000           00412                 NOP
+014E   0000           00413                 NOP
+014F   0000           00414                 NOP
+0150   0000           00415                 NOP
+0151   0000           00416                 NOP        
+                      00417     ;BCF        PORTC,RC6
+                      00418         
+                      00419         
+0152   3020           00420     MOVLW   ARRAY_START             ; START INDIRECT ACCES TO FIRST WORD
+0153   0084           00421     MOVWF   FSR                     
+                      00422     
+0154   3020           00423     MOVLW   SIZE_COL
+0155   00E0           00424     MOVWF   COLUMN_INDEX
 Warning[207]: Found label after column 1. (COLUMN_LOOP)
-0151                  00418     COLUMN_LOOP
-0151   3008           00419         MOVLW   SIZE_B
-0152   00E2           00420         MOVWF   CURRENT_COLUMN_INDEX
-                      00421         
-0153   0800           00422         MOVF    INDF,W
-0154   00E1           00423         MOVWF   CURRENT_COLUMN      ;LED PATTERN
-0155   0A84           00424         INCF    FSR,F
-                      00425         
-0156   0800           00426         MOVF    INDF,W
-0157   00E4           00427         MOVWF   CURRENT_COLOR       ;LED COLOR
-0158   0A84           00428         INCF    FSR,F
-                      00429         
+0156                  00425     COLUMN_LOOP
+0156   3008           00426         MOVLW   SIZE_B
+0157   00E2           00427         MOVWF   CURRENT_COLUMN_INDEX
+                      00428         
+0158   0800           00429         MOVF    INDF,W
+0159   00E1           00430         MOVWF   CURRENT_COLUMN      ;LED PATTERN
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+015A   0A84           00431         INCF    FSR,F
+                      00432         
+015B   0800           00433         MOVF    INDF,W
+015C   00E4           00434         MOVWF   CURRENT_COLOR       ;LED COLOR
+015D   0A84           00435         INCF    FSR,F
+                      00436         
 Warning[207]: Found label after column 1. (COLUMN_BIT)
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 10
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-0159                  00430         COLUMN_BIT
-0159   0864           00431         MOVF    CURRENT_COLOR,W
-015A   1FE1           00432         BTFSS   CURRENT_COLUMN,7        ; IF CURRENT POSITIOS IS ON
-015B   3000           00433         MOVLW   COLOR_BLACK
-015C   00E6           00434         MOVWF   TEMP_COLOR
-                      00435             
-015D   0000           00436             NOP
-015E   0000           00437             NOP
-015F   0000           00438             NOP
-0160   0000           00439             NOP
-0161   0000           00440             NOP
-0162   0000           00441             NOP
-0163   0000           00442             NOP
-0164   0000           00443             NOP
-0165   0000           00444             NOP
-0166   0000           00445             NOP
-0167   0000           00446             NOP
-0168   0000           00447             NOP
-0169   0000           00448             NOP
-016A   0000           00449             NOP
-                      00450             ;GREEN
-016B   2???           00451             CALL    GET_GREEN
-016C   00E7           00452             MOVWF   DISPLAY_COLOR
-016D   3008           00453             MOVLW   SIZE_B
-016E   00E8           00454             MOVWF   CURRENT_DISPLAY_INDEX
+015E                  00437         COLUMN_BIT
+015E   0864           00438         MOVF    CURRENT_COLOR,W
+015F   1FE1           00439         BTFSS   CURRENT_COLUMN,7        ; IF CURRENT POSITIOS IS ON
+0160   3000           00440         MOVLW   COLOR_BLACK
+0161   00E6           00441         MOVWF   TEMP_COLOR
+                      00442             
+0162   0000           00443             NOP
+0163   0000           00444             NOP
+0164   0000           00445             NOP
+0165   0000           00446             NOP
+0166   0000           00447             NOP
+0167   0000           00448             NOP
+0168   0000           00449             NOP
+0169   0000           00450             NOP
+016A   0000           00451             NOP
+016B   0000           00452             NOP
+016C   0000           00453             NOP
+016D   0000           00454             NOP
+016E   0000           00455             NOP
+016F   0000           00456             NOP
+                      00457             ;GREEN
+0170   2???           00458             CALL    GET_GREEN
+0171   00E7           00459             MOVWF   DISPLAY_COLOR
+0172   3008           00460             MOVLW   SIZE_B
+0173   00E8           00461             MOVWF   CURRENT_DISPLAY_INDEX
 Warning[207]: Found label after column 1. (GREEN_LOOP)
-016F                  00455             GREEN_LOOP
-016F   1FE7           00456                 BTFSS   DISPLAY_COLOR,7 ; IF 0 HIGHEST BIT
-0170   2???           00457                 GOTO    LOOP_GREEN_SHORT        ; GO TO SHORT
-0171   1787           00458                 BSF         PORTC,RC7           ; LONG, 1
-0172   0000           00459                 NOP
-0173   0000           00460                 NOP
-0174   0000           00461                 NOP
-0175   1387           00462                 BCF         PORTC,RC7
-0176   2???           00463                 GOTO    LOOP_GREEN_END
+0174                  00462             GREEN_LOOP
+0174   1FE7           00463                 BTFSS   DISPLAY_COLOR,7 ; IF 0 HIGHEST BIT
+0175   2???           00464                 GOTO    LOOP_GREEN_SHORT        ; GO TO SHORT
+0176   1787           00465                 BSF         PORTC,RC7           ; LONG, 1
+0177   0000           00466                 NOP
+0178   0000           00467                 NOP
+0179   0000           00468                 NOP
+017A   1387           00469                 BCF         PORTC,RC7
+017B   2???           00470                 GOTO    LOOP_GREEN_END
 Warning[207]: Found label after column 1. (LOOP_GREEN_SHORT)
-0177                  00464                 LOOP_GREEN_SHORT
-0177   1787           00465                 BSF         PORTC,RC7           ; SHORT, 0
-0178   1387           00466                 BCF         PORTC,RC7
+017C                  00471                 LOOP_GREEN_SHORT
+017C   1787           00472                 BSF         PORTC,RC7           ; SHORT, 0
+017D   1387           00473                 BCF         PORTC,RC7
 Warning[207]: Found label after column 1. (LOOP_GREEN_END)
-0179                  00467                 LOOP_GREEN_END
-0179   0DE7           00468                 RLF     DISPLAY_COLOR,F
-017A   0BE8           00469                 DECFSZ  CURRENT_DISPLAY_INDEX,F
-017B   2???           00470                 GOTO GREEN_LOOP
-                      00471             
-017C   0000           00472             NOP
-017D   0000           00473             NOP
-017E   0000           00474             NOP
-017F   0000           00475             NOP
-0180   0000           00476             NOP
-0181   0000           00477             NOP
-0182   0000           00478             NOP
-0183   0000           00479             NOP
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 11
+017E                  00474                 LOOP_GREEN_END
+017E   0DE7           00475                 RLF     DISPLAY_COLOR,F
+017F   0BE8           00476                 DECFSZ  CURRENT_DISPLAY_INDEX,F
+0180   2???           00477                 GOTO GREEN_LOOP
+                      00478             
+0181   0000           00479             NOP
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 11
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0184   0000           00480             NOP
-0185   0000           00481             NOP
-0186   0000           00482             NOP
-0187   0000           00483             NOP
-0188   0000           00484             NOP
-0189   0000           00485             NOP
-018A   0000           00486             NOP
-018B   0000           00487             NOP
-                      00488                 
-                      00489             ;RED
-018C   0866           00490             MOVF    TEMP_COLOR,W
-018D   2???           00491             CALL    GET_RED
-018E   00E7           00492             MOVWF   DISPLAY_COLOR
-018F   3008           00493             MOVLW   SIZE_B
-0190   00E8           00494             MOVWF   CURRENT_DISPLAY_INDEX
+0182   0000           00480             NOP
+0183   0000           00481             NOP
+0184   0000           00482             NOP
+0185   0000           00483             NOP
+0186   0000           00484             NOP
+0187   0000           00485             NOP
+0188   0000           00486             NOP
+0189   0000           00487             NOP
+018A   0000           00488             NOP
+018B   0000           00489             NOP
+018C   0000           00490             NOP
+018D   0000           00491             NOP
+018E   0000           00492             NOP
+018F   0000           00493             NOP
+0190   0000           00494             NOP
+                      00495                 
+                      00496             ;RED
+0191   0866           00497             MOVF    TEMP_COLOR,W
+0192   2???           00498             CALL    GET_RED
+0193   00E7           00499             MOVWF   DISPLAY_COLOR
+0194   3008           00500             MOVLW   SIZE_B
+0195   00E8           00501             MOVWF   CURRENT_DISPLAY_INDEX
 Warning[207]: Found label after column 1. (RED_LOOP)
-0191                  00495             RED_LOOP
-0191   1FE7           00496                 BTFSS   DISPLAY_COLOR,7 ; IF 0 HIGHEST BIT
-0192   2???           00497                 GOTO    LOOP_RED_SHORT  ; GO TO SHORT
-0193   1787           00498                 BSF         PORTC,RC7           ; LONG, 1
-0194   0000           00499                 NOP
-0195   0000           00500                 NOP
-0196   0000           00501                 NOP
-0197   1387           00502                 BCF         PORTC,RC7
-0198   2???           00503                 GOTO    LOOP_RED_END
+0196                  00502             RED_LOOP
+0196   1FE7           00503                 BTFSS   DISPLAY_COLOR,7 ; IF 0 HIGHEST BIT
+0197   2???           00504                 GOTO    LOOP_RED_SHORT  ; GO TO SHORT
+0198   1787           00505                 BSF         PORTC,RC7           ; LONG, 1
+0199   0000           00506                 NOP
+019A   0000           00507                 NOP
+019B   0000           00508                 NOP
+019C   1387           00509                 BCF         PORTC,RC7
+019D   2???           00510                 GOTO    LOOP_RED_END
 Warning[207]: Found label after column 1. (LOOP_RED_SHORT)
-0199                  00504                 LOOP_RED_SHORT
-0199   1787           00505                 BSF         PORTC,RC7           ; SHORT, 0
-019A   1387           00506                 BCF         PORTC,RC7
+019E                  00511                 LOOP_RED_SHORT
+019E   1787           00512                 BSF         PORTC,RC7           ; SHORT, 0
+019F   1387           00513                 BCF         PORTC,RC7
 Warning[207]: Found label after column 1. (LOOP_RED_END)
-019B                  00507                 LOOP_RED_END
-019B   0DE7           00508                 RLF     DISPLAY_COLOR,F
-019C   0BE8           00509                 DECFSZ  CURRENT_DISPLAY_INDEX,F
-019D   2???           00510                 GOTO RED_LOOP
-                      00511             
-019E   0000           00512             NOP
-019F   0000           00513             NOP
-01A0   0000           00514             NOP
-01A1   0000           00515             NOP
-01A2   0000           00516             NOP
-01A3   0000           00517             NOP
-01A4   0000           00518             NOP
-01A5   0000           00519             NOP
-01A6   0000           00520             NOP
-01A7   0000           00521             NOP
-01A8   0000           00522             NOP
-01A9   0000           00523             NOP
-01AA   0000           00524             NOP
-01AB   0000           00525             NOP
-01AC   0000           00526             NOP
-                      00527                 
-                      00528             ;BLUE
-01AD   0866           00529             MOVF    TEMP_COLOR,W
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 12
+01A0                  00514                 LOOP_RED_END
+01A0   0DE7           00515                 RLF     DISPLAY_COLOR,F
+01A1   0BE8           00516                 DECFSZ  CURRENT_DISPLAY_INDEX,F
+01A2   2???           00517                 GOTO RED_LOOP
+                      00518             
+01A3   0000           00519             NOP
+01A4   0000           00520             NOP
+01A5   0000           00521             NOP
+01A6   0000           00522             NOP
+01A7   0000           00523             NOP
+01A8   0000           00524             NOP
+01A9   0000           00525             NOP
+01AA   0000           00526             NOP
+01AB   0000           00527             NOP
+01AC   0000           00528             NOP
+01AD   0000           00529             NOP
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 12
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-01AE   2???           00530             CALL    GET_BLUE
-01AF   00E7           00531             MOVWF   DISPLAY_COLOR
-01B0   3008           00532             MOVLW   SIZE_B
-01B1   00E8           00533             MOVWF   CURRENT_DISPLAY_INDEX
+01AE   0000           00530             NOP
+01AF   0000           00531             NOP
+01B0   0000           00532             NOP
+01B1   0000           00533             NOP
+                      00534                 
+                      00535             ;BLUE
+01B2   0866           00536             MOVF    TEMP_COLOR,W
+01B3   2???           00537             CALL    GET_BLUE
+01B4   00E7           00538             MOVWF   DISPLAY_COLOR
+01B5   3008           00539             MOVLW   SIZE_B
+01B6   00E8           00540             MOVWF   CURRENT_DISPLAY_INDEX
 Warning[207]: Found label after column 1. (BLUE_LOOP)
-01B2                  00534             BLUE_LOOP
-01B2   1FE7           00535                 BTFSS   DISPLAY_COLOR,7 ; IF 0 HIGHEST BIT
-01B3   2???           00536                 GOTO    LOOP_BLUE_SHORT ; GO TO SHORT
-01B4   1787           00537                 BSF         PORTC,RC7           ; LONG, 1
-01B5   0000           00538                 NOP
-01B6   0000           00539                 NOP
-01B7   0000           00540                 NOP
-01B8   1387           00541                 BCF         PORTC,RC7
-01B9   2???           00542                 GOTO    LOOP_BLUE_END
+01B7                  00541             BLUE_LOOP
+01B7   1FE7           00542                 BTFSS   DISPLAY_COLOR,7 ; IF 0 HIGHEST BIT
+01B8   2???           00543                 GOTO    LOOP_BLUE_SHORT ; GO TO SHORT
+01B9   1787           00544                 BSF         PORTC,RC7           ; LONG, 1
+01BA   0000           00545                 NOP
+01BB   0000           00546                 NOP
+01BC   0000           00547                 NOP
+01BD   1387           00548                 BCF         PORTC,RC7
+01BE   2???           00549                 GOTO    LOOP_BLUE_END
 Warning[207]: Found label after column 1. (LOOP_BLUE_SHORT)
-01BA                  00543                 LOOP_BLUE_SHORT
-01BA   1787           00544                 BSF         PORTC,RC7           ; SHORT, 0
-01BB   1387           00545                 BCF         PORTC,RC7
+01BF                  00550                 LOOP_BLUE_SHORT
+01BF   1787           00551                 BSF         PORTC,RC7           ; SHORT, 0
+01C0   1387           00552                 BCF         PORTC,RC7
 Warning[207]: Found label after column 1. (LOOP_BLUE_END)
-01BC                  00546                 LOOP_BLUE_END
-01BC   0DE7           00547                 RLF     DISPLAY_COLOR,F
-01BD   0BE8           00548                 DECFSZ  CURRENT_DISPLAY_INDEX,F
-01BE   2???           00549                 GOTO BLUE_LOOP
-                      00550                 
-                      00551             ;BSF        PORTC,RC6          
-                      00552             ;BCF        PORTC,RC6
-01BF   0DE1           00553             RLF CURRENT_COLUMN,F
-01C0   0BE2           00554             DECFSZ  CURRENT_COLUMN_INDEX,F
-01C1   2???           00555             GOTO COLUMN_BIT
-                      00556 
-01C2   0BE0           00557         DECFSZ  COLUMN_INDEX,F
-01C3   2???           00558         GOTO    COLUMN_LOOP
-                      00559 
-                      00560     ;BCF        PORTC,RC6
-01C4   1787           00561     BSF PORTC,RC7       
-01C5   0008           00562     RETURN
+01C1                  00553                 LOOP_BLUE_END
+01C1   0DE7           00554                 RLF     DISPLAY_COLOR,F
+01C2   0BE8           00555                 DECFSZ  CURRENT_DISPLAY_INDEX,F
+01C3   2???           00556                 GOTO BLUE_LOOP
+                      00557                 
+                      00558             ;BSF        PORTC,RC6          
+                      00559             ;BCF        PORTC,RC6
+01C4   0DE1           00560             RLF CURRENT_COLUMN,F
+01C5   0BE2           00561             DECFSZ  CURRENT_COLUMN_INDEX,F
+01C6   2???           00562             GOTO COLUMN_BIT
                       00563 
-                      00564     
-                      00565 MAIN_PROG CODE                      ; let linker place main program
+01C7   0BE0           00564         DECFSZ  COLUMN_INDEX,F
+01C8   2???           00565         GOTO    COLUMN_LOOP
                       00566 
-0000                  00567 START
-0000   1283 1703      00568     BANKSEL ANSEL
+                      00567     ;BCF        PORTC,RC6
+01C9   1787           00568     BSF PORTC,RC7       
+01CA   0008           00569     RETURN
+                      00570 
+                      00571     
+                      00572 MAIN_PROG CODE                      ; let linker place main program
+                      00573 
+0000                  00574 START
+0000   1283 1703      00575     BANKSEL ANSEL
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0002   019E           00569     CLRF    ANSEL
+0002   019E           00576     CLRF    ANSEL
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0003   019F           00570     CLRF    ANSELH
-0004   1683 1303      00571     BANKSEL TRISC                   ; GOTO BANK
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0006   1307           00572     BCF TRISC,RC6       
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0007   1387           00573     BCF TRISC,RC7                   ; SET PINRC7 AS OUTPUT
-0008   30F0           00574     MOVLW   0xF0
-Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 13
+0003   019F           00577     CLRF    ANSELH
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 13
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0009   0086           00575     MOVWF   TRISB
-                      00576     
-000A   1683 1303      00577     BANKSEL OSCCON
+0004   1683 1303      00578     BANKSEL TRISC                   ; GOTO BANK
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-000C   018F           00578     clrf        OSCCON                  ; Internal clock to 31KHz & ext clock source
-                      00579     
-000D   1683 1303      00580     BANKSEL OSCCON                  ; OSCILATOR CONFIG
+0006   1307           00579     BCF TRISC,RC6       
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-000F   170F           00581     BSF OSCCON,IRCF2
+0007   1387           00580     BCF TRISC,RC7                   ; SET PINRC7 AS OUTPUT
+0008   30F0           00581     MOVLW   0xF0
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0010   168F           00582     BSF OSCCON,IRCF1
+0009   0086           00582     MOVWF   TRISB
+                      00583     
+000A   1683 1303      00584     BANKSEL OSCCON
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0011   120F           00583     BCF OSCCON,IRCF0                ; SET OSCILATOR TO 4MHZ
-                      00584     
-Warning[207]: Found label after column 1. (STABILIZATION)
-0012                  00585     STABILIZATION
+000C   018F           00585     clrf        OSCCON                  ; Internal clock to 31KHz & ext clock source
+                      00586     
+000D   1683 1303      00587     BANKSEL OSCCON                  ; OSCILATOR CONFIG
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0012   1D0F           00586         BTFSS   OSCCON,HTS          ; JUST WAIT UNTIL FLAG OF STABILIZATION
-0013   2???           00587         GOTO STABILIZATION
-                      00588 
-                      00589         
-0014   1283 1303      00590     BANKSEL PORTC
+000F   170F           00588     BSF OSCCON,IRCF2
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0010   168F           00589     BSF OSCCON,IRCF1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0011   120F           00590     BCF OSCCON,IRCF0                ; SET OSCILATOR TO 4MHZ
                       00591     
-0016   1787           00592     BSF PORTC,RC7                   ; SET OUTPUT HIGH
-0017   01FC           00593     CLRF    LAST_POS_Y
-                      00594     
-0018   3020           00595     MOVLW   SIZE_COL                ; LOAD COUNTER TO ACUM
-0019   00E1           00596     MOVWF   CURRENT_COLUMN          ; ACUM TO RAM
-                      00597     
-001A   1383           00598     BCF     STATUS,IRP              ; INDIRECT BANK 0,1
-001B   3020           00599     MOVLW   ARRAY_START                     ; GET START POSITION OF COLUMNS
-001C   0084           00600     MOVWF   FSR                     ; INDIRECT ADDRESSING TO START
+Warning[207]: Found label after column 1. (STABILIZATION)
+0012                  00592     STABILIZATION
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0012   1D0F           00593         BTFSS   OSCCON,HTS          ; JUST WAIT UNTIL FLAG OF STABILIZATION
+0013   2???           00594         GOTO STABILIZATION
+                      00595 
+                      00596         
+0014   1283 1303      00597     BANKSEL PORTC
+                      00598     
+0016   1787           00599     BSF PORTC,RC7                   ; SET OUTPUT HIGH
+0017   01FC           00600     CLRF    LAST_POS_Y
                       00601     
-                      00602     
+0018   3020           00602     MOVLW   SIZE_COL                ; LOAD COUNTER TO ACUM
+0019   00E1           00603     MOVWF   CURRENT_COLUMN          ; ACUM TO RAM
+                      00604     
+001A   1383           00605     BCF     STATUS,IRP              ; INDIRECT BANK 0,1
+001B   3020           00606     MOVLW   ARRAY_START                     ; GET START POSITION OF COLUMNS
+001C   0084           00607     MOVWF   FSR                     ; INDIRECT ADDRESSING TO START
+                      00608     
+                      00609     
 Warning[207]: Found label after column 1. (INITIALIZE)
-001D                  00603     INITIALIZE                      ; LOOP TO SET RAM
-001D   3000           00604         MOVLW   0x00                ; COLUMNS ON
-001E   0080           00605         MOVWF   INDF                ; FROM ACUM TO INDF COLUMNS ON AND OFF
-001F   0A84           00606         INCF    FSR,F               ; INCREMENT INDIRECT TO INDIRECT
-                      00607         
-0020   3001           00608         MOVLW   0x01
-0021   0080           00609         MOVWF   INDF                ; FROM ACUM TO INDF COLOR OF COLUMN
-0022   0A84           00610         INCF    FSR,F               ; INCREMENT INDIRECT TO INDIRECT
-                      00611         
-0023   0BE1           00612         DECFSZ  CURRENT_COLUMN,F    ; DECREASE RAM COUNTER TO SELF
-0024   2???           00613         GOTO    INITIALIZE
-                      00614 
-0025   3004           00615     MOVLW   0x04
-0026   00FD           00616     MOVWF   LAST_POS_X
-0027   00FC           00617     MOVWF   LAST_POS_Y
-                      00618 
-0028   3000           00619     MOVLW   0x00
-0029   00F6           00620     MOVWF   PIECE_TYPE
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 14
+001D                  00610     INITIALIZE                      ; LOOP TO SET RAM
+001D   3000           00611         MOVLW   0x00                ; COLUMNS ON
+001E   0080           00612         MOVWF   INDF                ; FROM ACUM TO INDF COLUMNS ON AND OFF
+001F   0A84           00613         INCF    FSR,F               ; INCREMENT INDIRECT TO INDIRECT
+                      00614         
+0020   3001           00615         MOVLW   0x01
+0021   0080           00616         MOVWF   INDF                ; FROM ACUM TO INDF COLOR OF COLUMN
+0022   0A84           00617         INCF    FSR,F               ; INCREMENT INDIRECT TO INDIRECT
+                      00618         
+0023   0BE1           00619         DECFSZ  CURRENT_COLUMN,F    ; DECREASE RAM COUNTER TO SELF
+0024   2???           00620         GOTO    INITIALIZE
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 14
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00621     
+                      00621 
+0025   3004           00622     MOVLW   0x04
+0026   00FD           00623     MOVWF   LAST_POS_X
+0027   00FC           00624     MOVWF   LAST_POS_Y
+                      00625 
+0028   3000           00626     MOVLW   0x00
+0029   00F6           00627     MOVWF   PIECE_TYPE
+                      00628     
 Warning[207]: Found label after column 1. (LOGIC_LOOP)
-002A                  00622     LOGIC_LOOP
-002A   1707           00623         BSF     PORTC,RC6          
-002B   1307           00624         BCF     PORTC,RC6
-                      00625         
-002C   300F           00626         MOVLW   0x0F
-002D   00DE           00627         MOVWF   B31
-002E   2???           00628         CALL    RANDOM
-002F   00DF           00629         MOVWF   C31
-                      00630 
-0030   2???           00631         CALL    PRINT_SCREEN
+002A                  00629     LOGIC_LOOP
+002A   1707           00630         BSF     PORTC,RC6          
+002B   1307           00631         BCF     PORTC,RC6
                       00632         
-0031   0806           00633         MOVF    PORTB,W
-0032   00FE           00634         MOVWF   TEMP_STATE
-                      00635         
-0033   3980           00636         ANDLW   0x80            ;CHECK RC7
-0034   00F3           00637         MOVWF   TEMP_REG
-0035   087F           00638         MOVF    LAST_STATE,W
-0036   3980           00639         ANDLW   0x80
-0037   0673           00640         XORWF   TEMP_REG,W
-0038   1D03           00641         BTFSS   STATUS,Z
-0039   2???           00642         CALL    ROTATE
-                      00643         
-003A   087E           00644         MOVF    TEMP_STATE,W
-003B   3940           00645         ANDLW   0x40            ;CHECK RC6
-003C   00F3           00646         MOVWF   TEMP_REG
-003D   087F           00647         MOVF    LAST_STATE,W
-003E   3940           00648         ANDLW   0x40
-003F   0673           00649         XORWF   TEMP_REG,W
-0040   1D03           00650         BTFSS   STATUS,Z
-0041   2???           00651         CALL    RIGHT
-                      00652         
-0042   087E           00653         MOVF    TEMP_STATE,W
-0043   3920           00654         ANDLW   0x20            ;CHECK RC5
-0044   00F3           00655         MOVWF   TEMP_REG
-0045   087F           00656         MOVF    LAST_STATE,W
-0046   3920           00657         ANDLW   0x20
-0047   0673           00658         XORWF   TEMP_REG,W
-0048   1D03           00659         BTFSS   STATUS,Z
-0049   2???           00660         CALL    DOWN
-                      00661         
-004A   087E           00662         MOVF    TEMP_STATE,W
-004B   3910           00663         ANDLW   0x10            ;CHECK RC4
-004C   00F3           00664         MOVWF   TEMP_REG
-004D   087F           00665         MOVF    LAST_STATE,W
-004E   3910           00666         ANDLW   0x10
-004F   0673           00667         XORWF   TEMP_REG,W
-0050   1D03           00668         BTFSS   STATUS,Z
-0051   2???           00669         CALL    LEFT
-                      00670         
-                      00671         ;CALL   PRINT_PIECE
-                      00672         
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 15
+002C   300F           00633         MOVLW   0x0F
+002D   00DE           00634         MOVWF   B31
+002E   2???           00635         CALL    RANDOM
+002F   00DF           00636         MOVWF   C31
+                      00637 
+0030   2???           00638         CALL    PRINT_SCREEN
+                      00639         
+0031   0806           00640         MOVF    PORTB,W
+0032   00FE           00641         MOVWF   TEMP_STATE
+                      00642         
+                      00643         ;BUTTON MANAGMENT
+0033   3980           00644         ANDLW   0x80            ;CHECK RC7
+0034   1903           00645         BTFSC   STATUS,Z
+0035   2???           00646         GOTO    BRC6
+0036   00F3           00647         MOVWF   TEMP_REG
+0037   087F           00648         MOVF    LAST_STATE,W
+0038   3980           00649         ANDLW   0x80
+0039   0673           00650         XORWF   TEMP_REG,W
+003A   1D03           00651         BTFSS   STATUS,Z
+003B   2???           00652         CALL    ROTATE
+                      00653         
+Warning[207]: Found label after column 1. (BRC6)
+003C                  00654         BRC6
+                      00655         
+003C   087E           00656         MOVF    TEMP_STATE,W
+003D   3940           00657         ANDLW   0x40            ;CHECK RC6
+003E   1903           00658         BTFSC   STATUS,Z
+003F   2???           00659         GOTO    BRC5
+0040   00F3           00660         MOVWF   TEMP_REG
+0041   087F           00661         MOVF    LAST_STATE,W
+0042   3940           00662         ANDLW   0x40
+0043   0673           00663         XORWF   TEMP_REG,W
+0044   1D03           00664         BTFSS   STATUS,Z
+0045   2???           00665         CALL    RIGHT
+                      00666         
+Warning[207]: Found label after column 1. (BRC5)
+0046                  00667         BRC5
+                      00668         
+0046   087E           00669         MOVF    TEMP_STATE,W
+0047   3920           00670         ANDLW   0x20            ;CHECK RC5
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 15
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0052   01F7           00673         CLRF    PIECE_0
-0053   01F8           00674         CLRF    PIECE_1
-0054   01F9           00675         CLRF    PIECE_2
-0055   01FA           00676         CLRF    PIECE_3
-0056   2???           00677         CALL    GET_PIECE
-0057   0877           00678         MOVF    PIECE_0,W
-0058   2???           00679         CALL    REVERSE_BYTE
-0059   00A0           00680         MOVWF   B0
-005A   0878           00681         MOVF    PIECE_1,W
-005B   00A2           00682         MOVWF   B1
-005C   0879           00683         MOVF    PIECE_2,W
-005D   2???           00684         CALL    REVERSE_BYTE
-005E   00A4           00685         MOVWF   B2
-005F   087A           00686         MOVF    PIECE_3,W
-0060   00A6           00687         MOVWF   B3
-                      00688         
-0061   087D           00689         MOVF    LAST_POS_X,W
-0062   00DC           00690         MOVWF   B30
-                      00691         
+0048   1903           00671         BTFSC   STATUS,Z
+0049   2???           00672         GOTO    BRC4
+004A   00F3           00673         MOVWF   TEMP_REG
+004B   087F           00674         MOVF    LAST_STATE,W
+004C   3920           00675         ANDLW   0x20
+004D   0673           00676         XORWF   TEMP_REG,W
+004E   1D03           00677         BTFSS   STATUS,Z
+004F   2???           00678         CALL    DOWN
+                      00679         
+Warning[207]: Found label after column 1. (BRC4)
+0050                  00680         BRC4
+                      00681         
+0050   087E           00682         MOVF    TEMP_STATE,W
+0051   3910           00683         ANDLW   0x10            ;CHECK RC4
+0052   1903           00684         BTFSC   STATUS,Z
+0053   2???           00685         GOTO    BEND
+0054   00F3           00686         MOVWF   TEMP_REG
+0055   087F           00687         MOVF    LAST_STATE,W
+0056   3910           00688         ANDLW   0x10
+0057   0673           00689         XORWF   TEMP_REG,W
+0058   1D03           00690         BTFSS   STATUS,Z
+0059   2???           00691         CALL    LEFT
+                      00692         
+Warning[207]: Found label after column 1. (BEND)
+005A                  00693         BEND
+                      00694         ;END BUTTONSNSNSNSNSNSN
+                      00695         
+                      00696         ;DEBUUUUG
+005A   01F7           00697         CLRF    PIECE_0
+005B   01F8           00698         CLRF    PIECE_1
+005C   01F9           00699         CLRF    PIECE_2
+005D   01FA           00700         CLRF    PIECE_3
+005E   2???           00701         CALL    GET_PIECE
+005F   0877           00702         MOVF    PIECE_0,W
+0060   2???           00703         CALL    REVERSE_BYTE
+0061   00A0           00704         MOVWF   B0
+0062   0878           00705         MOVF    PIECE_1,W
+0063   00A2           00706         MOVWF   B1
+0064   0879           00707         MOVF    PIECE_2,W
+0065   2???           00708         CALL    REVERSE_BYTE
+0066   00A4           00709         MOVWF   B2
+0067   087A           00710         MOVF    PIECE_3,W
+0068   00A6           00711         MOVWF   B3
+0069   087D           00712         MOVF    LAST_POS_X,W
+006A   00DC           00713         MOVWF   B30
+006B   0876           00714         MOVF    PIECE_TYPE,W
+006C   00DA           00715         MOVWF   B29
+006D   087C           00716         MOVF    LAST_POS_Y,W
+006E   00D8           00717         MOVWF   B28
+                      00718         ;END DEBUG
+                      00719         
 Warning[207]: Found label after column 1. (END_LOGIC)
-0063                  00692         END_LOGIC
-0063   087E           00693         MOVF    TEMP_STATE,W
-0064   00FF           00694         MOVWF   LAST_STATE
-0065   2???           00695         GOTO LOGIC_LOOP
+006F                  00720         END_LOGIC
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+006F   087E           00721         MOVF    TEMP_STATE,W
+0070   00FF           00722         MOVWF   LAST_STATE
+0071   2???           00723         GOTO LOGIC_LOOP
 Warning[205]: Found directive in column 1. (END)
-38D2                  00696 END
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 16
+38D2                  00724 END
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 17
 
 
 SYMBOL TABLE
@@ -915,7 +953,7 @@ B27                               00000056
 B28                               00000058
 B29                               0000005A
 B3                                00000026
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 17
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 18
 
 
 SYMBOL TABLE
@@ -930,11 +968,15 @@ B7                                0000002E
 B8                                00000030
 B9                                00000032
 BAUDCTL                           0000009B
+BEND                              0000005A
 BF                                00000000
 BLOCK_ROTATIONS                   00000035
 BLOCK_SIZES                       00000079
 BLOCK_STARTS                      00000095
-BLUE_LOOP                         000001B2
+BLUE_LOOP                         000001B7
+BRC4                              00000050
+BRC5                              00000046
+BRC6                              0000003C
 BRG0                              00000000
 BRG1                              00000001
 BRG10                             00000002
@@ -970,16 +1012,16 @@ C1CH0                             00000000
 C1CH1                             00000001
 C1IE                              00000005
 C1IF                              00000005
-C1OE                              00000005
-C1ON                              00000007
-C1OUT                             00000006
-C1POL                             00000004
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 18
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 19
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+C1OE                              00000005
+C1ON                              00000007
+C1OUT                             00000006
+C1POL                             00000004
 C1R                               00000002
 C1SEN                             00000005
 C1VREN                            00000007
@@ -1029,24 +1071,24 @@ CHS0                              00000002
 CHS1                              00000003
 CHS2                              00000004
 CHS3                              00000005
-CKE                               00000006
-CKP                               00000004
-CM1CON0                           00000119
-CM2CON0                           0000011A
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 19
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 20
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CKE                               00000006
+CKP                               00000004
+CM1CON0                           00000119
+CM2CON0                           0000011A
 CM2CON1                           0000011B
 COLORS_BLUE                       00000025
 COLORS_GREEN                      00000015
 COLORS_RED                        00000005
 COLOR_BLACK                       00000000
-COLUMN_BIT                        00000159
+COLUMN_BIT                        0000015E
 COLUMN_INDEX                      00000060
-COLUMN_LOOP                       00000151
+COLUMN_LOOP                       00000156
 CREN                              00000004
 CSRC                              00000007
 CURRENT_COLOR                     00000064
@@ -1059,7 +1101,7 @@ DC                                00000001
 DC1B0                             00000004
 DC1B1                             00000005
 DISPLAY_COLOR                     00000067
-DOWN                              000000E9
+DOWN                              000000EE
 D_A                               00000005
 D_NOT_A                           00000005
 ECCPAS                            0000001D
@@ -1077,29 +1119,29 @@ EEDATH                            0000010E
 EEIE                              00000004
 EEIF                              00000004
 EEPGD                             00000007
-END_LOGIC                         00000063
+END_LOGIC                         0000006F
 F                                 00000001
 FERR                              00000002
 FSR                               00000004
-GET_BLUE                          0000012E
-GET_GREEN                         0000011C
+GET_BLUE                          00000133
+GET_GREEN                         00000121
 GET_PIECE                         000000C8
-GET_PIECE_LOOP                    000000D3
+GET_PIECE_LOOP                    000000D8
 GET_PIECE_ROTATION                000000C1
 GET_PIECE_START                   000000B9
-GET_RED                           00000125
-GET_SIZE                          000000B1
-GIE                               00000007
-GO                                00000001
-GO_DONE                           00000001
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 20
+GET_RED                           0000012A
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 21
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+GET_SIZE                          000000B1
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
 GO_NOT_DONE                       00000001
-GREEN_LOOP                        0000016F
+GREEN_LOOP                        00000174
 HTS                               00000002
 I2C_DATA                          00000005
 I2C_READ                          00000002
@@ -1138,25 +1180,25 @@ IRP                               00000007
 LAST_POS_X                        0000007D
 LAST_POS_Y                        0000007C
 LAST_STATE                        0000007F
-LEFT                              000000E5
+LEFT                              000000EA
 LOGIC_LOOP                        0000002A
-LOOP_BLUE_END                     000001BC
-LOOP_BLUE_SHORT                   000001BA
-LOOP_GREEN_END                    00000179
-LOOP_GREEN_SHORT                  00000177
-LOOP_RED_END                      0000019B
-LOOP_RED_SHORT                    00000199
+LOOP_BLUE_END                     000001C1
+LOOP_BLUE_SHORT                   000001BF
+LOOP_GREEN_END                    0000017E
+LOOP_GREEN_SHORT                  0000017C
+LOOP_RED_END                      000001A0
+LOOP_RED_SHORT                    0000019E
 LTS                               00000001
-MAX_COLORS                        0000000F
-MAX_ROTATIONS                     00000003
-MC1OUT                            00000007
-MC2OUT                            00000006
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 21
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 22
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+MAX_COLORS                        0000000F
+MAX_ROTATIONS                     00000003
+MC1OUT                            00000007
+MC2OUT                            00000006
 MSK                               00000093
 MSK0                              00000000
 MSK1                              00000001
@@ -1206,25 +1248,25 @@ PIECE_1                           00000078
 PIECE_2                           00000079
 PIECE_3                           0000007A
 PIECE_SIZE                        0000007B
-PIECE_START                       00000062
-PIECE_TABLE                       00000063
-PIECE_TEMP                        00000060
-PIECE_TYPE                        00000076
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 22
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 23
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+PIECE_START                       00000062
+PIECE_TABLE                       00000063
+PIECE_TEMP                        00000060
+PIECE_TYPE                        00000076
 PIR1                              0000000C
 PIR2                              0000000D
 PORTA                             00000005
 PORTB                             00000006
 PORTC                             00000007
 PR2                               00000092
-PRINT_PIECE                       000000F0
-PRINT_PIECE_LOOP                  000000F4
-PRINT_SCREEN                      00000137
+PRINT_PIECE                       000000F5
+PRINT_PIECE_LOOP                  000000F9
+PRINT_SCREEN                      0000013C
 PRSEN                             00000007
 PS0                               00000000
 PS1                               00000001
@@ -1247,7 +1289,7 @@ RA4                               00000004
 RA5                               00000005
 RABIE                             00000003
 RABIF                             00000000
-RANDOM                            00000103
+RANDOM                            00000108
 RB4                               00000004
 RB5                               00000005
 RB6                               00000006
@@ -1265,23 +1307,23 @@ RCIE                              00000005
 RCIF                              00000005
 RCREG                             0000001A
 RCSTA                             00000018
-RD                                00000000
-READ_WRITE                        00000002
-RED_LOOP                          00000191
-REVERSE_BYTE                      00000113
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 23
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 24
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RD                                00000000
+READ_WRITE                        00000002
+RED_LOOP                          00000196
+REVERSE_BYTE                      00000118
 REVERSE_COUNT                     00000062
-REVERSE_LOOP                      00000116
+REVERSE_LOOP                      0000011B
 REVERSE_RET                       00000061
 REVERSE_TEMP                      00000060
-RIGHT                             000000EB
-ROTATE                            000000DA
-ROTATION_RESET                    000000E1
+RIGHT                             000000F0
+ROTATE                            000000DF
+ROTATION_RESET                    000000E6
 RP0                               00000005
 RP1                               00000006
 RX9                               00000006
@@ -1294,8 +1336,8 @@ SCKP                              00000004
 SCS                               00000000
 SENB                              00000003
 SENDB                             00000003
-SEND_RESET                        0000013F
-SEND_RESET_HIGH                   0000013A
+SEND_RESET                        00000144
+SEND_RESET_HIGH                   0000013F
 SIZE_B                            00000008
 SIZE_COL                          00000020
 SIZE_TEMP                         00000061
@@ -1324,16 +1366,16 @@ STABILIZATION                     00000012
 START                             00000000
 STATUS                            00000003
 STRA                              00000000
-STRB                              00000001
-STRC                              00000002
-STRD                              00000003
-STRSYNC                           00000004
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 24
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 25
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+STRB                              00000001
+STRC                              00000002
+STRD                              00000003
+STRSYNC                           00000004
 SWDTEN                            00000000
 SYNC                              00000004
 T0CS                              00000005
@@ -1383,16 +1425,16 @@ TRISA4                            00000004
 TRISA5                            00000005
 TRISB                             00000086
 TRISB4                            00000004
-TRISB5                            00000005
-TRISB6                            00000006
-TRISB7                            00000007
-TRISC                             00000087
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 25
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 26
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
 TRISC0                            00000000
 TRISC1                            00000001
 TRISC2                            00000002
@@ -1442,16 +1484,16 @@ WPUA0                             00000000
 WPUA1                             00000001
 WPUA2                             00000002
 WPUA4                             00000004
-WPUA5                             00000005
-WPUB                              00000115
-WPUB4                             00000004
-WPUB5                             00000005
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 26
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 27
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+WPUA5                             00000005
+WPUB                              00000115
+WPUB4                             00000004
+WPUB5                             00000005
 WPUB6                             00000006
 WPUB7                             00000007
 WR                                00000001
@@ -1501,16 +1543,16 @@ _IESO_OFF                         00003BFF
 _IESO_ON                          00003FFF
 _INTOSC                           00003FFD
 _INTOSCIO                         00003FFC
-_INTRC_OSC_CLKOUT                 00003FFD
-_INTRC_OSC_NOCLKOUT               00003FFC
-_LP_OSC                           00003FF8
-_MCLRE_OFF                        00003FDF
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-28-2019  22:27:06         PAGE 27
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   1-29-2019  0:28:54         PAGE 28
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_MCLRE_OFF                        00003FDF
 _MCLRE_ON                         00003FFF
 _PWRTE_OFF                        00003FFF
 _PWRTE_ON                         00003FEF
@@ -1524,7 +1566,7 @@ hiB                               00000075
 lowB                              00000074
 
 Errors   :     0
-Warnings :    22 reported,     0 suppressed
+Warnings :    26 reported,     0 suppressed
 Messages :    10 reported,     0 suppressed
 
 
