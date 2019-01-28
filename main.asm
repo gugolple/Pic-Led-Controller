@@ -40,18 +40,19 @@ PIECE_TABLE	equ 0x63
 
 	
 ;COMMONS BECAUSE BETWEEN 0x70-0x7F
-LAST_STATE  equ 0x7F
-LAST_POS_X  equ 0x7E
-LAST_POS_Y  equ 0x7D
-PIECE_SIZE  equ	0x7C
-PIECE_3	    equ	0x7B
-PIECE_2	    equ	0x7A
-PIECE_1	    equ	0x79
-PIECE_0	    equ	0x78
-PIECE_TYPE  equ	0x77
-hiB	    equ 0x76
-lowB	    equ 0x75
-  
+LAST_STATE  equ 0x7F	;RB4,RB5,RB6,RB7 0xf0
+TEMP_STATE  equ	0x7E
+LAST_POS_X  equ 0x7D
+LAST_POS_Y  equ 0x7C
+PIECE_SIZE  equ	0x7B
+PIECE_3	    equ	0x7A
+PIECE_2	    equ	0x79
+PIECE_1	    equ	0x78
+PIECE_0	    equ	0x77
+PIECE_TYPE  equ	0x76
+hiB	    equ 0x75
+lowB	    equ 0x74
+TEMP_REG    equ	0x73
   
 ;MAP OF DISPLAY MEMORY, MUST NOT REUSE
     cblock 0x20 ; 0x20 - 0x5F = 64 BYTES 
@@ -130,7 +131,7 @@ GET_PIECE
 	MOVWF	INDF
 	INCF	FSR,F
 	INCF	PIECE_START,F
-	DECFSZ	SIZE_TEMP
+	DECFSZ	SIZE_TEMP,F
 	GOTO	GET_PIECE_LOOP
 	
     RETLW   0x00
@@ -138,17 +139,17 @@ GET_PIECE
 RANDOM       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
              IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
              BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
-             COMF   hiB                   
+             COMF   hiB,F                  
              MOVLW  0x80                 ; We want to XOR hiB.7, hiB.6, hiB.4
              BTFSC  hiB,d'6'             ; and lowB.3 together in W. Rather than
-             XORWF  hiB                  ; try to line up these bits, we just
+             XORWF  hiB,F                  ; try to line up these bits, we just
              BTFSC  hiB,d'4'             ; check to see whether a bit is a 1. If it
-             XORWF  hiB                  ; is, XOR 80h into hiB. If it isn't,
+             XORWF  hiB ,F                 ; is, XOR 80h into hiB. If it isn't,
              BTFSC  lowB,d'3'            ; do nothing. When we're done, the
-             XORWF  hiB                  ; XOR of the 4 bits will be in hiB.7.
+             XORWF  hiB,F                  ; XOR of the 4 bits will be in hiB.7.
              RLF    hiB,W                  ; Move hiB.7 into carry. 
-             RLF    lowB                   ; Rotate c into lowB.0, lowB.7 into c. 
-             RLF    hiB                    ; Rotate c into hiB.0. 
+             RLF    lowB,F                   ; Rotate c into lowB.0, lowB.7 into c. 
+             RLF    hiB,F                    ; Rotate c into hiB.0. 
 	     MOVF   lowB,W
              RETURN
 	     
@@ -440,6 +441,22 @@ START
 	MOVF	LAST_POS_Y,W
 	ADDLW	ARRAY_START
 	MOVWF	FSR
+	
+	MOVF	PORTB,W
+	MOVWF	TEMP_STATE
+	ANDLW	0x80		;if any are off then button is pressed then it wont be zero
+				;8 is RC7
+        MOVWF	TEMP_REG
+	MOVF	LAST_STATE,W
+	ANDLW	0x80
+	XORWF	TEMP_REG
+	BTFSC	STATUS,Z
+	GOTO	END_CHANGE
+	
+	
+	MOVF	LAST_POS_Y,W
+	ADDLW	ARRAY_START
+	MOVWF	FSR
 	MOVF	PORTB,W
 	
 	CALL	RANDOM
@@ -456,5 +473,9 @@ START
 	ANDLW	0x3F
 	MOVWF	LAST_POS_Y
 	
+	
+	END_CHANGE
+	MOVF	TEMP_STATE,W
+	MOVWF	LAST_STATE
 	GOTO LOGIC_LOOP
 END
