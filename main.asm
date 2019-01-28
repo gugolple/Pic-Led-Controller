@@ -130,7 +130,7 @@ GET_PIECE
 	
     RETLW   0x00
 
-Random       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
+RANDOM       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
              IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
              BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
              COMF   hiB                   
@@ -437,9 +437,13 @@ START
 	MOVWF	FSR
 	MOVF	PORTB,W
 	
+	CALL	RANDOM
 	BTFSS	LAST_POS,0x01
 	CALL	REVERSE_BYTE
+	MOVWF	INDF
 	
+	INCF	FSR,F
+	CALL	RANDOM
 	MOVWF	INDF
 	
 	INCF	LAST_POS,F
