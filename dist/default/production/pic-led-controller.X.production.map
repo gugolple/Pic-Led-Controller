@@ -1,5 +1,5 @@
 MPLINK 5.09, LINKER
-Linker Map File - Created Mon Jan 28 17:39:04 2019
+Linker Map File - Created Mon Jan 28 17:53:56 2019
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -7,7 +7,7 @@ Linker Map File - Created Mon Jan 28 17:39:04 2019
                  RES_VECT       code   0x000000    program   0x000004
                    .cinit    romdata   0x000002    program   0x000004
               Int_Handler       code   0x000004    program   0x0002f0
-                MAIN_PROG       code   0x00017c    program   0x00008c
+                MAIN_PROG       code   0x00017c    program   0x00006e
 .config_2007_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002007    program   0x000002
 
 
@@ -15,9 +15,9 @@ Linker Map File - Created Mon Jan 28 17:39:04 2019
                               Program Memory Usage 
                                Start         End      
                            ---------   ---------      
-                            0x000000    0x0001c1      
+                            0x000000    0x0001b2      
                             0x002007    0x002007      
-            451 out of 4359 program addresses used, program memory utilization is 10%
+            436 out of 4359 program addresses used, program memory utilization is 10%
 
 
 
@@ -33,7 +33,7 @@ Linker Map File - Created Mon Jan 28 17:39:04 2019
                COLORS_RED   0x000005    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                COLUMN_BIT   0x00010f    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
               COLUMN_LOOP   0x000107    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               END_CHANGE   0x0001bf    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               END_CHANGE   0x0001b0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                  GET_BLUE   0x0000e4    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                 GET_GREEN   0x0000d2    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                 GET_PIECE   0x0000a5    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
@@ -101,6 +101,6 @@ Linker Map File - Created Mon Jan 28 17:39:04 2019
             STABILIZATION   0x00018e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                INITIALIZE   0x000199    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                LOGIC_LOOP   0x0001a1    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               END_CHANGE   0x0001bf    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               END_CHANGE   0x0001b0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
 
 

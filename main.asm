@@ -1,3 +1,21 @@
+;Copyright (C) 2019 Gugolple
+
+;This program is free software; you can redistribute it and/or
+;modify it under the terms of the GNU General Public License
+;as published by the Free Software Foundation; either version 2
+;of the License, or (at your option) any later version.
+
+;This program is distributed in the hope that it will be useful,
+;but WITHOUT ANY WARRANTY; without even the implied warranty of
+;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;GNU General Public License for more details.
+
+;You should have received a copy of the GNU General Public License
+;along with this program; if not, write to the Free Software
+;Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+    
+    
+    
 ; TODO INSERT CONFIG CODE HERE USING CONFIG BITS GENERATOR
 #include <p16f690.inc>
     __config (_HS_OSC & _WDT_OFF & _PWRTE_OFF & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _BOR_OFF & _IESO_OFF & _FCMEN_ON)
@@ -454,24 +472,6 @@ START
 	GOTO	END_CHANGE
 	
 	
-	MOVF	LAST_POS_Y,W
-	ADDLW	ARRAY_START
-	MOVWF	FSR
-	MOVF	PORTB,W
-	
-	CALL	RANDOM
-	BTFSS	LAST_POS_Y,0x01
-	CALL	REVERSE_BYTE
-	MOVWF	INDF
-	
-	INCF	FSR,F
-	CALL	RANDOM
-	MOVWF	INDF
-	
-	INCF	LAST_POS_Y,F
-	INCF	LAST_POS_Y,W
-	ANDLW	0x3F
-	MOVWF	LAST_POS_Y
 	
 	
 	END_CHANGE
