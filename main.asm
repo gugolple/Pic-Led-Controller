@@ -18,7 +18,7 @@
     
 ; TODO INSERT CONFIG CODE HERE USING CONFIG BITS GENERATOR
 #include <p16f690.inc>
-    __config (_HS_OSC & _WDT_OFF & _PWRTE_OFF & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _BOR_OFF & _IESO_OFF & _FCMEN_ON)
+    __config (_HS_OSC & _WDT_OFF & _PWRTE_ON & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _BOR_OFF & _IESO_OFF & _FCMEN_ON)
     
 RES_VECT  CODE    0x0000            ; processor reset vector
     CLRF    INTCON		    ; disable interrupts
@@ -71,6 +71,8 @@ PIECE_TYPE  equ	0x76
 hiB	    equ 0x75
 lowB	    equ 0x74
 TEMP_REG    equ	0x73
+    
+; BANK 1 MAPS, LOGIC ONLY    
   
 ;MAP OF DISPLAY MEMORY, MUST NOT REUSE
     cblock 0x20 ; 0x20 - 0x5F = 64 BYTES 
@@ -387,6 +389,8 @@ GET_BLUE
     
     
 PRINT_SCREEN			    ; Only works on bank 0 or 2
+    BCF	STATUS,RP1		    ;FORCE BANK 0
+    BCF	STATUS,RP0
     BSF	PORTC,RC7		    ; SET OUTPUT HIGH, START RESET
     MOVLW   .80
     MOVWF   CURRENT_COLUMN
@@ -400,22 +404,6 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
     SEND_RESET			    ; Reset >50 microseconds
 	DECFSZ	CURRENT_COLUMN,F	    ; Tnstruction 0.4 * 3 (AMOUNT INST) 10MHz
 	GOTO SEND_RESET		    ;  = 1.2 microseconds
-	
-	
-    ;BSF	PORTC,RC6
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP
-		NOP	   
-    ;BCF	PORTC,RC6
 	
 	
     MOVLW   ARRAY_START		    ; START INDIRECT ACCES TO FIRST WORD
@@ -455,6 +443,23 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
 	    NOP
 	    NOP
 	    NOP
+	    NOP
+	    
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
 	    ;GREEN
 	    CALL    GET_GREEN
 	    MOVWF   DISPLAY_COLOR
@@ -464,7 +469,6 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
 		BTFSS   DISPLAY_COLOR,7	; IF 0 HIGHEST BIT
 		GOTO    LOOP_GREEN_SHORT	; GO TO SHORT
 		BSF	    PORTC,RC7		; LONG, 1
-		NOP
 		NOP
 		NOP
 		BCF	    PORTC,RC7
@@ -478,6 +482,21 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
 		GOTO GREEN_LOOP
 	    
 	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    
 	    NOP
 	    NOP
 	    NOP
@@ -506,7 +525,6 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
 		BSF	    PORTC,RC7		; LONG, 1
 		NOP
 		NOP
-		NOP
 		BCF	    PORTC,RC7
 		GOTO    LOOP_RED_END
 		LOOP_RED_SHORT
@@ -516,6 +534,22 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
 		RLF	DISPLAY_COLOR,F
 		DECFSZ  CURRENT_DISPLAY_INDEX,F
 		GOTO RED_LOOP
+	    
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
+	    NOP
 	    
 	    NOP
 	    NOP
@@ -543,7 +577,6 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
 		BTFSS   DISPLAY_COLOR,7	; IF 0 HIGHEST BIT
 		GOTO    LOOP_BLUE_SHORT	; GO TO SHORT
 		BSF	    PORTC,RC7		; LONG, 1
-		NOP
 		NOP
 		NOP
 		BCF	    PORTC,RC7
@@ -581,18 +614,28 @@ START
     BCF	TRISC,RC7		    ; SET PINRC7 AS OUTPUT
     MOVLW   0xF0
     MOVWF   TRISB
+    BANKSEL PORTC		    ; GOTO BANK
+    BSF	    PORTC,RC6
     
-    BANKSEL OSCCON
-    clrf	OSCCON			; Internal clock to 31KHz & ext clock source
     
     BANKSEL OSCCON		    ; OSCILATOR CONFIG
     BSF	OSCCON,IRCF2
     BSF	OSCCON,IRCF1
     BCF	OSCCON,IRCF0		    ; SET OSCILATOR TO 4MHZ
     
-    STABILIZATION
-	BTFSS	OSCCON,HTS	    ; JUST WAIT UNTIL FLAG OF STABILIZATION
-	GOTO STABILIZATION
+    
+    
+    
+    BANKSEL OSCCON
+    BCF	    OSCCON,SCS
+    WAIT_START_UP
+	BTFSS	OSCCON,OSTS
+	GOTO	WAIT_START_UP
+        
+    
+    ;STABILIZATION
+	;BTFSS	OSCCON,HTS	    ; JUST WAIT UNTIL FLAG OF STABILIZATION
+	;GOTO STABILIZATION
 
 	
     BANKSEL PORTC
@@ -630,6 +673,9 @@ START
 	BSF	PORTC,RC6	   
 	BCF	PORTC,RC6
 	
+	;KEEP ALIVE ON BANK 0
+	BCF	STATUS,RP1		    ;FORCE BANK 0
+	BCF	STATUS,RP0
 	MOVLW	0x0F
 	MOVWF	B31
 	CALL	RANDOM
@@ -637,11 +683,18 @@ START
 
 	CALL	PRINT_SCREEN
 	
+	
+	;READ BUTTONS BEFORE LEAVING BANK 0
 	MOVF	PORTB,W
 	XORLW	0xF0
 	MOVWF	TEMP_STATE
 	
+	;LOGIC ON BANK 1 BECAUSE NOT DIRECT ACCESS
+	BCF	STATUS,RP1		    ;FORCE BANK 1
+	BSF	STATUS,RP0
+	
 	;BUTTON MANAGMENT
+	;COULD MAYBE BE REDUCED
 	ANDLW	0x80
 	BTFSC	STATUS,Z
 	GOTO	BRC6
@@ -694,7 +747,10 @@ START
 	BEND
 	;END BUTTONSNSNSNSNSNSN
 	
-	;DEBUUUUG
+	;DEBUUUUG ON BANK 0
+	BCF	STATUS,RP1		    ;FORCE BANK 0
+	BCF	STATUS,RP0
+	
 	CLRF	PIECE_0
 	CLRF	PIECE_1
 	CLRF	PIECE_2
