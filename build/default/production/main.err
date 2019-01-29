@@ -1,37 +1,36 @@
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 261 : Found label after column 1. (GET_PIECE_LOOP)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 281 : Found label after column 1. (ROTATION_RESET)
-Message[305] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 290 : Using default destination of 1 (file).
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 308 : Found label after column 1. (PRINT_PIECE_LOOP)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 350 : Found label after column 1. (REVERSE_LOOP)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 397 : Found label after column 1. (SEND_RESET_HIGH)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 404 : Found label after column 1. (SEND_RESET)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 414 : Found label after column 1. (COLUMN_LOOP)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 426 : Found label after column 1. (COLUMN_BIT)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 468 : Found label after column 1. (GREEN_LOOP)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 476 : Found label after column 1. (LOOP_GREEN_SHORT)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 479 : Found label after column 1. (LOOP_GREEN_END)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 522 : Found label after column 1. (RED_LOOP)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 530 : Found label after column 1. (LOOP_RED_SHORT)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 533 : Found label after column 1. (LOOP_RED_END)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 576 : Found label after column 1. (BLUE_LOOP)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 584 : Found label after column 1. (LOOP_BLUE_SHORT)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 587 : Found label after column 1. (LOOP_BLUE_END)
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 610 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 611 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 613 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 263 : Found label after column 1. (GET_PIECE_LOOP)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 276 : Found label after column 1. (PRINT_PIECE_LOOP)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 311 : Found label after column 1. (ROTATION_RESET)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 354 : Found label after column 1. (REVERSE_LOOP)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 401 : Found label after column 1. (SEND_RESET_HIGH)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 408 : Found label after column 1. (SEND_RESET)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 418 : Found label after column 1. (COLUMN_LOOP)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 430 : Found label after column 1. (COLUMN_BIT)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 472 : Found label after column 1. (GREEN_LOOP)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 480 : Found label after column 1. (LOOP_GREEN_SHORT)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 483 : Found label after column 1. (LOOP_GREEN_END)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 526 : Found label after column 1. (RED_LOOP)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 534 : Found label after column 1. (LOOP_RED_SHORT)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 537 : Found label after column 1. (LOOP_RED_END)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 580 : Found label after column 1. (BLUE_LOOP)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 588 : Found label after column 1. (LOOP_BLUE_SHORT)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 591 : Found label after column 1. (LOOP_BLUE_END)
 Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 614 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 616 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 622 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 623 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 624 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 630 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 631 : Found label after column 1. (WAIT_START_UP)
-Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 632 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 653 : Found label after column 1. (INITIALIZE)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 672 : Found label after column 1. (LOGIC_LOOP)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 708 : Found label after column 1. (BRC6)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 721 : Found label after column 1. (BRC5)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 734 : Found label after column 1. (BRC4)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 747 : Found label after column 1. (BEND)
-Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 783 : Found label after column 1. (END_LOGIC)
-Warning[205] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 787 : Found directive in column 1. (END)
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 615 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 617 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 618 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 620 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 626 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 627 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 628 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 634 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 635 : Found label after column 1. (WAIT_START_UP)
+Message[302] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 636 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 657 : Found label after column 1. (INITIALIZE)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 677 : Found label after column 1. (LOGIC_LOOP)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 715 : Found label after column 1. (BRC6)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 728 : Found label after column 1. (BRC5)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 741 : Found label after column 1. (BRC4)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 754 : Found label after column 1. (BEND)
+Warning[207] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 775 : Found label after column 1. (END_LOGIC)
+Warning[205] /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm 779 : Found directive in column 1. (END)
