@@ -73,6 +73,7 @@ PIECE_TYPE  equ	0x76
 hiB	    equ 0x75
 lowB	    equ 0x74
 TEMP_REG    equ	0x73
+PRINT_REG   equ	0x72
     
 ; BANK 1 MAPS, LOGIC ONLY    
   
@@ -291,7 +292,12 @@ PRINT_PIECE
 	MOVF	PIECE_TEMP,W
 	BTFSC	FSR,1
 	CALL	REVERSE_BYTE
-	MOVWF	INDF
+	BTFSS	PRINT_REG,0
+	IORWF	INDF,F		;INSTEAD of moving we inclusive or them
+				;Collisions are check at other place
+	BTFSC	PRINT_REG,0
+	XORWF	INDF,F		;So if we XOR with an already placed piece it 
+				;gets removed
 	
 	DECFSZ	SIZE_TEMP,F
 	GOTO	PRINT_PIECE_LOOP
