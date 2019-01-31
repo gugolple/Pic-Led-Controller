@@ -1,4 +1,4 @@
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  1
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   00000062            00040 CURRENT_COLUMN_INDEX    equ 0x62
   00000063            00041 TABLE_TEMPORAL  equ 0x63
   00000064            00042 CURRENT_COLOR   equ 0x64
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  2
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -116,7 +116,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0005                  00093 PRINT_SCREEN                        ; Only works on bank 0 or 2
 0005   1303           00094     BCF STATUS,RP1                  ;FORCE BANK 0
 0006   1283           00095     BCF STATUS,RP0
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  3
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -175,7 +175,7 @@ Warning[207]: Found label after column 1. (COLUMN_BIT)
 0026   0000           00142             NOP
 0027   0000           00143             NOP
 0028   0000           00144             NOP
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  4
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -234,7 +234,7 @@ Warning[207]: Found label after column 1. (LOOP_GREEN_END)
                       00192             
 0053   0000           00193             NOP
 0054   0000           00194             NOP
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  5
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -293,7 +293,7 @@ Warning[207]: Found label after column 1. (LOOP_RED_END)
 007F                  00242                 LOOP_RED_END
 007F   0DE7           00243                 RLF     DISPLAY_COLOR,F
 0080   0BE8           00244                 DECFSZ  CURRENT_DISPLAY_INDEX,F
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  6
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  6
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -352,7 +352,7 @@ Warning[207]: Found label after column 1. (LOOP_BLUE_SHORT)
 00AC                  00293                 LOOP_BLUE_SHORT
 00AC   1787           00294                 BSF         PORTC,RC7           ; SHORT, 0
 00AD   1387           00295                 BCF         PORTC,RC7
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  7
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  7
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -411,7 +411,7 @@ Warning[207]: Found label after column 1. (LOOP_BLUE_END)
                       00330     
 00E9   3401           00331     RETLW 0x01
 00EA   3401           00332     RETLW 0x01
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  8
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  8
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -470,7 +470,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 010C   3402           00383     RETLW 0x02
 010D   3403           00384     RETLW 0x03
                       00385     
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE  9
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE  9
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -529,7 +529,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
        3402 3403 
 013C   3402 3403 3402 00433                 dt  0x02,0x03,0x02,0x03,    0x02,0x03, 0x02,0x03        ;T,Z
        3403 3402 3403 
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 10
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 10
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -588,7 +588,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 01A3   1803           00462     BTFSC   STATUS,C            ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
 01A4   0A8A           00463     INCF    PCLATH,F
 01A5   0082           00464     MOVWF   PCL
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 11
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 11
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -647,7 +647,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 01CD   00FE           00515     MOVWF   PIECE_WIDTH
                       00516     
 01CE   0876           00517     MOVF    PIECE_TYPE,W
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 12
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 12
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -706,7 +706,7 @@ Warning[207]: Found label after column 1. (PRINT_PIECE_LOOP)
                       00566         
 01F2   0BE4           00567         DECFSZ  SIZE_TEMP,F
 01F3   2???           00568         GOTO    PRINT_PIECE_LOOP
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 13
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 13
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -765,7 +765,7 @@ Warning[207]: Found label after column 1. (ROTATION_RESET)
 0215   0876           00617     MOVF    PIECE_TYPE,W    ;Get the number and and it with all but 2 lowest
 0216   39FC           00618     ANDLW   0xFC            ;Put back where it came from
 0217   00F6           00619     MOVWF   PIECE_TYPE
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 14
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 14
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -790,7 +790,7 @@ Warning[207]: Found label after column 1. (LEFT_LOOP)
 0223   3076           00635         MOVLW   PIECE_0-1
 0224   0764           00636         ADDWF   SIZE_TEMP,W
 0225   0084           00637         MOVWF   FSR
-0226   0C00           00638         RRF     INDF,W
+0226   0C80           00638         RRF     INDF,F
 0227   0BE4           00639         DECFSZ  SIZE_TEMP,F
 0228   2???           00640         GOTO    LEFT_LOOP
 0229   3400           00641     RETLW   0x00
@@ -816,7 +816,7 @@ Warning[207]: Found label after column 1. (RIGHT_LOOP)
 0235   3076           00660         MOVLW   PIECE_0-1
 0236   0764           00661         ADDWF   SIZE_TEMP,W
 0237   0084           00662         MOVWF   FSR
-0238   0D00           00663         RLF     INDF,W
+0238   0D80           00663         RLF     INDF,F
 0239   0BE4           00664         DECFSZ  SIZE_TEMP,F
 023A   2???           00665         GOTO    RIGHT_LOOP
 023B   3400           00666     RETLW   0x00
@@ -824,7 +824,7 @@ Warning[207]: Found label after column 1. (RIGHT_LOOP)
                       00668 
                       00669 
 023C   0875           00670 RANDOM       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 15
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 15
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -883,7 +883,7 @@ Warning[207]: Found label after column 1. (REVERSE_LOOP)
 0267                  00720 GET_BLUE
 0267   00E3           00721     MOVWF   TABLE_TEMPORAL      ;PUT INDEX OUT OF WAY
 0268   30??           00722     MOVLW   HIGH COLORS_BLUE    ;GET HIGH PART OF TABLE
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 16
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 16
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -942,7 +942,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 001A   2???           00762         GOTO    WAIT_START_UP
                       00763         
                       00764     
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 17
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 17
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1001,7 +1001,7 @@ Warning[207]: Found label after column 1. (INITIALIZE_SECOND)
 0036   1303           00813     BCF STATUS,RP1                  ;FORCE BANK 0
 0037   1283           00814     BCF STATUS,RP0
                       00815         
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 18
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 18
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1060,7 +1060,7 @@ Warning[207]: Found label after column 1. (TITLE_PRINT_LOOP)
 Warning[207]: Found label after column 1. (CLEAR_SCREEN)
 005E                  00864     CLEAR_SCREEN                    ; LOOP TO SET RAM
 005E   0180           00865         CLRF    INDF                ; FROM ACUM TO INDF COLUMNS ON AND OFF
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 19
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 19
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1119,7 +1119,7 @@ Warning[207]: Found label after column 1. (BRC6)
 007F   087F           00914         MOVF    LAST_STATE,W
 0080   3940           00915         ANDLW   0x40
 0081   0673           00916         XORWF   TEMP_REG,W
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 20
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 20
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1178,7 +1178,7 @@ Warning[207]: Found label after column 1. (BEND)
                       00964         ;MOVF   LAST_POS_Y,W
                       00965         ;SUBLW  .28
                       00966         ;BTFSS  STATUS,C
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 21
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 21
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -1200,7 +1200,7 @@ Warning[203]: Found opcode in column 1. (GOTO)
                       00978 
 Warning[205]: Found directive in column 1. (END)
 38C2                  00979 END                                                   
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 22
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 22
 
 
 SYMBOL TABLE
@@ -1259,7 +1259,7 @@ B27                               00000056
 B28                               00000058
 B29                               0000005A
 B3                                00000026
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 23
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 23
 
 
 SYMBOL TABLE
@@ -1318,7 +1318,7 @@ C19                               00000047
 C1CH0                             00000000
 C1CH1                             00000001
 C1IE                              00000005
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 24
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 24
 
 
 SYMBOL TABLE
@@ -1377,7 +1377,7 @@ CCPR1L                            00000015
 CHS0                              00000002
 CHS1                              00000003
 CHS2                              00000004
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 25
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 25
 
 
 SYMBOL TABLE
@@ -1436,7 +1436,7 @@ F                                 00000001
 FERR                              00000002
 FSR                               00000004
 GAME_TITLE                        00000180
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 26
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 26
 
 
 SYMBOL TABLE
@@ -1495,7 +1495,7 @@ IRCF2                             00000006
 IRP                               00000007
 LAST_POS_X                        0000007D
 LAST_POS_Y                        0000007C
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 27
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 27
 
 
 SYMBOL TABLE
@@ -1554,7 +1554,7 @@ PCLATH                            0000000A
 PCON                              0000008E
 PDC0                              00000000
 PDC1                              00000001
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 28
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 28
 
 
 SYMBOL TABLE
@@ -1613,7 +1613,7 @@ RABIE                             00000003
 RABIF                             00000000
 RANDOM                            0000023C
 RB4                               00000004
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 29
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 29
 
 
 SYMBOL TABLE
@@ -1672,7 +1672,7 @@ SPEN                              00000007
 SR0                               00000006
 SR1                               00000007
 SRCON                             0000019E
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 30
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 30
 
 
 SYMBOL TABLE
@@ -1731,7 +1731,7 @@ TMR1CS                            00000001
 TMR1GE                            00000006
 TMR1H                             0000000F
 TMR1IE                            00000000
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 31
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 31
 
 
 SYMBOL TABLE
@@ -1790,7 +1790,7 @@ VP6EN                             00000004
 VR0                               00000000
 VR1                               00000001
 VR2                               00000002
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 32
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 32
 
 
 SYMBOL TABLE
@@ -1849,7 +1849,7 @@ _CP_ON                            00003FBF
 _DEVID1                           00002006
 _EC_OSC                           00003FFB
 _EXTRC                            00003FFF
-MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:05:48         PAGE 33
+MPASM 5.82  /HOME/GUGO/MPLABXPROJECTS/PIC-LE   2-1-2019  0:10:44         PAGE 33
 
 
 SYMBOL TABLE
