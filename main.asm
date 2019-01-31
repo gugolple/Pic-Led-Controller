@@ -84,328 +84,16 @@ PRINT_REG   equ	0x72
 	B16,C16,B17,C17,B18,C18,B19,C19,B20,C20,B21,C21,B22,C22,B23,C23
 	B24,C24,B25,C25,B26,C26,B27,C27,B28,C28,B29,C29,B30,C30,B31,C31
     endc
-
-;COLORS_GREEN dt	0x00,0x20,0x00,0x00,0x20,0x20,0x00,0x20,0x10,0x00,0x00,0x10,0x10,0x00,0x20,0x00
-;COLORS_RED dt	0x00,0x00,0x20,0x00,0x20,0x00,0x20,0x20,0x00,0x10,0x00,0x10,0x00,0x10,0x10,0x10
-;COLORS_BLUE dt	0x00,0x00,0x00,0x20,0x00,0x20,0x20,0x20,0x00,0x00,0x10,0x00,0x10,0x10,0x00,0x20
-    
-;COLORS In 1/4 of brightness, overheating issues with the leds
-COLORS_RED   dt	0x00,0x20,0x10,0x08,0x20,0x10,0x20,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x08,0x08
-COLORS_GREEN dt	0x00,0x20,0x10,0x08,0x00,0x00,0x20,0x10,0x20,0x10,0x20,0x10,0x00,0x00,0x00,0x00
-COLORS_BLUE  dt	0x00,0x20,0x10,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x20,0x10,0x20,0x20,0x20,0x10
-COLOR_BLACK equ 0x00 ; POSITION OF BLACK
- 
-;LISTA DE BLOQUES
- 
-;ORDER:	LI,S,L,IL,T,Z,IZ
-BLOCK_ROTATIONS
-    ;LINE
-    RETLW 0x0F
-    
-    RETLW 0x01
-    RETLW 0x01
-    RETLW 0x01
-    RETLW 0x01
-    
-    RETLW 0x0F
-    
-    RETLW 0x01
-    RETLW 0x01
-    RETLW 0x01
-    RETLW 0x01
-    
-    ;SQUARE
-    RETLW 0x03
-    RETLW 0x03
-    
-    RETLW 0x03
-    RETLW 0x03
-    
-    RETLW 0x03
-    RETLW 0x03
-    
-    RETLW 0x03
-    RETLW 0x03
-    
-    ;IL
-    RETLW 0x04
-    RETLW 0x07
-    
-    RETLW 0x03
-    RETLW 0x02
-    RETLW 0x02
-    
-    RETLW 0x07
-    RETLW 0x01
-    
-    RETLW 0x01
-    RETLW 0x01
-    RETLW 0x03
-    
-    ;L
-    RETLW 0x07
-    RETLW 0x04
-    
-    RETLW 0x03
-    RETLW 0x01
-    RETLW 0x01
-    
-    RETLW 0x01
-    RETLW 0x07
-    
-    RETLW 0x02
-    RETLW 0x02
-    RETLW 0x03
-    
-    ;T
-    RETLW 0x02
-    RETLW 0x07
-    
-    RETLW 0x02
-    RETLW 0x03
-    RETLW 0x02
-    
-    RETLW 0x07
-    RETLW 0x02
-    
-    RETLW 0x01
-    RETLW 0x03
-    RETLW 0x01
-    
-    ;IZ
-    RETLW 0x03
-    RETLW 0x06
-    
-    RETLW 0x02
-    RETLW 0x03
-    RETLW 0x01
-    
-    RETLW 0x03
-    RETLW 0x06
-    
-    RETLW 0x02
-    RETLW 0x03
-    RETLW 0x01
-    
-    ;Z
-    RETLW 0x06
-    RETLW 0x03
-    
-    RETLW 0x01
-    RETLW 0x03
-    RETLW 0x02
-    
-    RETLW 0x06
-    RETLW 0x03
-    
-    RETLW 0x01
-    RETLW 0x03
-    RETLW 0x02
-
-BLOCK_SIZES	dt  0x01,0x04,0x01,0x04,    0x02, 0x02, 0x02, 0x02	;LI,S
-		dt  0x02,0x03,0x02,0x03,    0x02,0x03,0x02,0x03		;L,IL
-		dt  0x02,0x03,0x02,0x03,    0x02,0x03, 0x02,0x03	;T,Z
-		dt  0x02,0x03, 0x02,0x03				;IZ
-		
-BLOCK_STARTS	dt 0x00,0x01,0x05,0x06,	    0x0a, 0x0c, 0x0e, 0x10	;LI,S
-		dt 0x12,0x14,0x17,0x19,	    0x1c,0x1e,0x21,0x23		;L,IL
-		dt 0x26,0x28,0x2b,0x2d,	    0x30,0x32, 0x35,0x37	;T,Z
-		dt 0x3a,0x3c, 0x3f,0x41					;IZ
-;BLOCK_STARTS	dt  0x00,0x01,0x05,0x06,    0x0a, 0x0c, 0x0e, 0x10	;LI,S
-;		dt  0x12,0x15,0x17,0x1a,    0x1c,0x1f,0x21,0x24		;L,IL
-;		dt  0x26,0x28,0x2b,0x2d,    0x30,0x32, 0x35,0x37	;T,Z
-;		dt  0x3a,0x3c, 0x3f,0x41				;IZ
-		    
-GET_SIZE
-    MOVWF   PIECE_TABLE		;PUT INDEX OUT OF WAY
-    MOVLW   HIGH BLOCK_SIZES	;GET HIGH PART OF TABLE
-    MOVWF   PCLATH		;SET PAG
-    MOVF    PIECE_TABLE,W	;RECOVER INDEX
-    ADDLW   BLOCK_SIZES		;ADD LOW
-    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-    INCF    PCLATH,F
-    MOVWF   PCL
-
-GET_PIECE_START
-    MOVWF   PIECE_TABLE		;PUT INDEX OUT OF WAY
-    MOVLW   HIGH BLOCK_STARTS	;GET HIGH PART OF TABLE
-    MOVWF   PCLATH		;SET PAG
-    MOVF    PIECE_TABLE,W	;RECOVER INDEX
-    ADDLW   BLOCK_STARTS	;ADD LOW
-    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-    INCF    PCLATH,F
-    MOVWF   PCL
-    
-GET_PIECE_ROTATION
-    MOVLW   HIGH BLOCK_ROTATIONS    ;GET HIGH PART OF TABLE
-    MOVWF   PCLATH		    ;SET PAG
-    MOVF    PIECE_START,W	    ;RECOVER INDEX
-    ADDLW   BLOCK_ROTATIONS	    ;ADD LOW
-    BTFSC   STATUS,C		    ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-    INCF    PCLATH,F
-    MOVWF   PCL
-
-GET_PIECE
-    MOVF    PIECE_TYPE,W
-    ANDLW   0x1F		;MAX 32
-    MOVWF   PIECE_TYPE
-    SUBLW   .27
-    BTFSS   STATUS,C
-    CLRF    PIECE_TYPE
-    
-    MOVF    PIECE_TYPE,W
-    
-    CALL    GET_SIZE		;SIZE OF PIECE
-    MOVWF   PIECE_SIZE
-    MOVWF   SIZE_TEMP
-    
-    MOVF    PIECE_TYPE,W
-    CALL    GET_PIECE_START	;WHERE IT STARTS
-    MOVWF   PIECE_START		
-    
-    MOVLW   PIECE_0
-    MOVWF   FSR
-    
-    GET_PIECE_LOOP
-	CALL	GET_PIECE_ROTATION
-	MOVWF	INDF
-	INCF	FSR,F
-	INCF	PIECE_START,F
-	DECFSZ	SIZE_TEMP,F
-	GOTO	GET_PIECE_LOOP
-	
-    RETLW   0x00
-    
-PRINT_PIECE	
-    MOVF    PIECE_SIZE,W
-    MOVWF   SIZE_TEMP
-    PRINT_PIECE_LOOP
-	;RECOVER CURRENT PIECE INTO PIECE_TEMP
-	MOVLW	PIECE_0-1	;REMOVE 1 FROM MEMORY START
-	ADDWF	SIZE_TEMP,W	;SIZE 0 IS 1
-	MOVWF	FSR
-	MOVF	INDF,W
-	MOVWF	PIECE_TEMP
-	
-	;MOVE TO MEMORY WHERE NEEDED
-	MOVF	LAST_POS_Y,W
-	ADDWF	SIZE_TEMP,W
-	MOVWF	PIECE_INTER
-	RLF	PIECE_INTER,W
-	ADDLW	B0
-	MOVWF	FSR
-	MOVF	PIECE_TEMP,W
-	BTFSC	FSR,1
-	CALL	REVERSE_BYTE
-	BTFSS	PRINT_REG,0
-	IORWF	INDF,F		;INSTEAD of moving we inclusive or them
-				;Collisions are check at other place
-	BTFSC	PRINT_REG,0
-	XORWF	INDF,F		;So if we XOR with an already placed piece it 
-				;gets removed
-	
-	DECFSZ	SIZE_TEMP,F
-	GOTO	PRINT_PIECE_LOOP
-    RETURN
-    
-ROTATE	
-    MOVF    PIECE_TYPE,W
-    ANDLW   0x03
-    XORLW   0x03	    ;1 xor 1 is 0, so if all 2 low bits are 1 then
-    BTFSC   STATUS,Z	    ; i need to reset to 0, otherwise if 0 is clear
-    GOTO    ROTATION_RESET  ;just add 1
-    
-    INCF    PIECE_TYPE,F    ;
-    CALL    GET_PIECE
-    RETLW   0x00
-    
-    ROTATION_RESET
-    MOVF    PIECE_TYPE,W    ;Get the number and and it with all but 2 lowest
-    ANDLW   0xFC	    ;Put back where it came from
-    MOVWF   PIECE_TYPE
-    CALL    GET_PIECE
-    RETLW   0x00
-LEFT	
-    MOVF    LAST_POS_X,F
-    BTFSS   STATUS,Z
-    DECF    LAST_POS_X,F
-    RETLW   0x00
-DOWN	
-    RETLW   0x00
-RIGHT
-    MOVF    LAST_POS_X,W
-    XORLW   0x07
-    BTFSS   STATUS,Z
-    INCF    LAST_POS_X,F
-    RETLW   0x00
-
-
-
-RANDOM       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
-             IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
-             BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
-             COMF   hiB,F                  
-             MOVLW  0x80                 ; We want to XOR hiB.7, hiB.6, hiB.4
-             BTFSC  hiB,d'6'             ; and lowB.3 together in W. Rather than
-             XORWF  hiB,F                  ; try to line up these bits, we just
-             BTFSC  hiB,d'4'             ; check to see whether a bit is a 1. If it
-             XORWF  hiB ,F                 ; is, XOR 80h into hiB. If it isn't,
-             BTFSC  lowB,d'3'            ; do nothing. When we're done, the
-             XORWF  hiB,F                  ; XOR of the 4 bits will be in hiB.7.
-             RLF    hiB,W                  ; Move hiB.7 into carry. 
-             RLF    lowB,F                   ; Rotate c into lowB.0, lowB.7 into c. 
-             RLF    hiB,F                    ; Rotate c into hiB.0. 
-	     MOVF   lowB,W
-             RETURN
-	     
-REVERSE_BYTE
-    MOVWF   REVERSE_TEMP
-    MOVLW   0x08
-    MOVWF   REVERSE_COUNT
-    REVERSE_LOOP
-	RRF	    REVERSE_TEMP,F
-	RLF	    REVERSE_RET,F
-	DECFSZ  REVERSE_COUNT,F
-	GOTO REVERSE_LOOP
-    MOVF    REVERSE_RET,W
-    RETURN
-    
-    
-GET_GREEN
-    MOVWF   TABLE_TEMPORAL	;PUT INDEX OUT OF WAY
-    MOVLW   HIGH COLORS_GREEN	;GET HIGH PART OF TABLE
-    MOVWF   PCLATH		;SET PAG
-    MOVF    TABLE_TEMPORAL,W	;RECOVER INDEX
-    ANDLW   MAX_COLORS		;GET MAX 16
-    ADDLW   COLORS_GREEN	;ADD LOW
-    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-    INCF    PCLATH,F
-    MOVWF   PCL
-GET_RED
-    MOVWF   TABLE_TEMPORAL	;PUT INDEX OUT OF WAY
-    MOVLW   HIGH COLORS_RED	;GET HIGH PART OF TABLE
-    MOVWF   PCLATH		;SET PAGE
-    MOVF    TABLE_TEMPORAL,W	;RECOVER INDEX
-    ANDLW   MAX_COLORS		;GET MAX 16
-    ADDLW   COLORS_RED		;ADD LOW
-    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-    INCF    PCLATH,F
-    MOVWF   PCL
-GET_BLUE
-    MOVWF   TABLE_TEMPORAL	;PUT INDEX OUT OF WAY
-    MOVLW   HIGH COLORS_BLUE	;GET HIGH PART OF TABLE
-    MOVWF   PCLATH		;SET PAGE
-    MOVF    TABLE_TEMPORAL,W	;RECOVER INDEX
-    ANDLW   MAX_COLORS		;GET MAX 16
-    ADDLW   COLORS_BLUE		;ADD LOW
-    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
-    INCF    PCLATH,F
-    MOVWF   PCL
-    
-    
 PRINT_SCREEN			    ; Only works on bank 0 or 2
     BCF	STATUS,RP1		    ;FORCE BANK 0
     BCF	STATUS,RP0
+    
+    ;KEEP ALIVE ON BANK 0
+    MOVLW	0x01		    ;REVERSED FILE
+    MOVWF	B31
+    CALL	RANDOM
+    MOVWF	C31
+    
     BSF	PORTC,RC7		    ; SET OUTPUT HIGH, START RESET
     MOVLW   .80
     MOVWF   CURRENT_COLUMN
@@ -617,7 +305,343 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
     BSF PORTC,RC7	
     RETURN
 
+;COLORS_GREEN dt	0x00,0x20,0x00,0x00,0x20,0x20,0x00,0x20,0x10,0x00,0x00,0x10,0x10,0x00,0x20,0x00
+;COLORS_RED dt	0x00,0x00,0x20,0x00,0x20,0x00,0x20,0x20,0x00,0x10,0x00,0x10,0x00,0x10,0x10,0x10
+;COLORS_BLUE dt	0x00,0x00,0x00,0x20,0x00,0x20,0x20,0x20,0x00,0x00,0x10,0x00,0x10,0x10,0x00,0x20
     
+;COLORS In 1/4 of brightness, overheating issues with the leds
+COLORS_RED   dt	0x00,0x20,0x10,0x08,0x20,0x10,0x20,0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x08,0x08
+COLORS_GREEN dt	0x00,0x20,0x10,0x08,0x00,0x00,0x20,0x10,0x20,0x10,0x20,0x10,0x00,0x00,0x00,0x00
+COLORS_BLUE  dt	0x00,0x20,0x10,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x20,0x10,0x20,0x20,0x20,0x10
+COLOR_BLACK equ 0x00 ; POSITION OF BLACK
+ 
+;LISTA DE BLOQUES
+ 
+;ORDER:	LI,S,L,IL,T,Z,IZ
+BLOCK_ROTATIONS
+    ;LINE
+    RETLW 0x0F
+    
+    RETLW 0x01
+    RETLW 0x01
+    RETLW 0x01
+    RETLW 0x01
+    
+    RETLW 0x0F
+    
+    RETLW 0x01
+    RETLW 0x01
+    RETLW 0x01
+    RETLW 0x01
+    
+    ;SQUARE
+    RETLW 0x03
+    RETLW 0x03
+    
+    RETLW 0x03
+    RETLW 0x03
+    
+    RETLW 0x03
+    RETLW 0x03
+    
+    RETLW 0x03
+    RETLW 0x03
+    
+    ;IL
+    RETLW 0x04
+    RETLW 0x07
+    
+    RETLW 0x03
+    RETLW 0x02
+    RETLW 0x02
+    
+    RETLW 0x07
+    RETLW 0x01
+    
+    RETLW 0x01
+    RETLW 0x01
+    RETLW 0x03
+    
+    ;L
+    RETLW 0x07
+    RETLW 0x04
+    
+    RETLW 0x03
+    RETLW 0x01
+    RETLW 0x01
+    
+    RETLW 0x01
+    RETLW 0x07
+    
+    RETLW 0x02
+    RETLW 0x02
+    RETLW 0x03
+    
+    ;T
+    RETLW 0x02
+    RETLW 0x07
+    
+    RETLW 0x02
+    RETLW 0x03
+    RETLW 0x02
+    
+    RETLW 0x07
+    RETLW 0x02
+    
+    RETLW 0x01
+    RETLW 0x03
+    RETLW 0x01
+    
+    ;IZ
+    RETLW 0x03
+    RETLW 0x06
+    
+    RETLW 0x02
+    RETLW 0x03
+    RETLW 0x01
+    
+    RETLW 0x03
+    RETLW 0x06
+    
+    RETLW 0x02
+    RETLW 0x03
+    RETLW 0x01
+    
+    ;Z
+    RETLW 0x06
+    RETLW 0x03
+    
+    RETLW 0x01
+    RETLW 0x03
+    RETLW 0x02
+    
+    RETLW 0x06
+    RETLW 0x03
+    
+    RETLW 0x01
+    RETLW 0x03
+    RETLW 0x02
+
+BLOCK_SIZES	dt  0x01,0x04,0x01,0x04,    0x02, 0x02, 0x02, 0x02	;LI,S
+		dt  0x02,0x03,0x02,0x03,    0x02,0x03,0x02,0x03		;L,IL
+		dt  0x02,0x03,0x02,0x03,    0x02,0x03, 0x02,0x03	;T,Z
+		dt  0x02,0x03, 0x02,0x03				;IZ
+		
+BLOCK_STARTS	dt 0x00,0x01,0x05,0x06,	    0x0a, 0x0c, 0x0e, 0x10	;LI,S
+		dt 0x12,0x14,0x17,0x19,	    0x1c,0x1e,0x21,0x23		;L,IL
+		dt 0x26,0x28,0x2b,0x2d,	    0x30,0x32, 0x35,0x37	;T,Z
+		dt 0x3a,0x3c, 0x3f,0x41					;IZ
+
+TITLE_SIZE  equ	.29
+GAME_TITLE	;Hardcoded tetris into the screen
+		;TETRIS
+		dt  0x00,0x80,0xFF,0x80,0x00   ;T
+		dt  0xFF,0x91,0x91,0x91,0x91   ;E
+		dt  0x00,0x80,0xFF,0x80,0x00   ;T
+		dt  0xFF,0x90,0x90,0xFF,0xE7   ;R
+		dt  0x00,0x81,0xFF,0x81,0x00   ;I
+		dt  0xF1,0x91,0x91,0x91,0x9F   ;S
+		    
+GET_TITLE
+    MOVWF   PIECE_TABLE		;PUT INDEX OUT OF WAY
+    MOVLW   HIGH GAME_TITLE	;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		;SET PAG
+    MOVF    PIECE_TABLE,W	;RECOVER INDEX
+    ADDLW   GAME_TITLE		;ADD LOW
+    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+		    
+GET_SIZE
+    MOVWF   PIECE_TABLE		;PUT INDEX OUT OF WAY
+    MOVLW   HIGH BLOCK_SIZES	;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		;SET PAG
+    MOVF    PIECE_TABLE,W	;RECOVER INDEX
+    ADDLW   BLOCK_SIZES		;ADD LOW
+    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+
+GET_PIECE_START
+    MOVWF   PIECE_TABLE		;PUT INDEX OUT OF WAY
+    MOVLW   HIGH BLOCK_STARTS	;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		;SET PAG
+    MOVF    PIECE_TABLE,W	;RECOVER INDEX
+    ADDLW   BLOCK_STARTS	;ADD LOW
+    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+    
+GET_PIECE_ROTATION
+    MOVLW   HIGH BLOCK_ROTATIONS    ;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		    ;SET PAG
+    MOVF    PIECE_START,W	    ;RECOVER INDEX
+    ADDLW   BLOCK_ROTATIONS	    ;ADD LOW
+    BTFSC   STATUS,C		    ;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+
+GET_PIECE
+    MOVF    PIECE_TYPE,W
+    ANDLW   0x1F		;MAX 32
+    MOVWF   PIECE_TYPE
+    SUBLW   .27
+    BTFSS   STATUS,C
+    CLRF    PIECE_TYPE
+    
+    MOVF    PIECE_TYPE,W
+    
+    CALL    GET_SIZE		;SIZE OF PIECE
+    MOVWF   PIECE_SIZE
+    MOVWF   SIZE_TEMP
+    
+    MOVF    PIECE_TYPE,W
+    CALL    GET_PIECE_START	;WHERE IT STARTS
+    MOVWF   PIECE_START		
+    
+    MOVLW   PIECE_0
+    MOVWF   FSR
+    
+    GET_PIECE_LOOP
+	CALL	GET_PIECE_ROTATION
+	MOVWF	INDF
+	INCF	FSR,F
+	INCF	PIECE_START,F
+	DECFSZ	SIZE_TEMP,F
+	GOTO	GET_PIECE_LOOP
+	
+    RETLW   0x00
+    
+PRINT_PIECE	
+    MOVF    PIECE_SIZE,W
+    MOVWF   SIZE_TEMP
+    PRINT_PIECE_LOOP
+	;RECOVER CURRENT PIECE INTO PIECE_TEMP
+	MOVLW	PIECE_0-1	;REMOVE 1 FROM MEMORY START
+	ADDWF	SIZE_TEMP,W	;SIZE 0 IS 1
+	MOVWF	FSR
+	MOVF	INDF,W
+	MOVWF	PIECE_TEMP
+	
+	;MOVE TO MEMORY WHERE NEEDED
+	MOVF	LAST_POS_Y,W
+	ADDWF	SIZE_TEMP,W
+	MOVWF	PIECE_INTER
+	RLF	PIECE_INTER,W
+	ADDLW	B0
+	MOVWF	FSR
+	MOVF	PIECE_TEMP,W
+	BTFSC	FSR,1
+	CALL	REVERSE_BYTE
+	BTFSS	PRINT_REG,0
+	IORWF	INDF,F		;INSTEAD of moving we inclusive or them
+				;Collisions are check at other place
+	BTFSC	PRINT_REG,0
+	XORWF	INDF,F		;So if we XOR with an already placed piece it 
+				;gets removed
+	
+	DECFSZ	SIZE_TEMP,F
+	GOTO	PRINT_PIECE_LOOP
+    RETURN
+
+SPAWN_PIECE
+    RETURN  ;;TODO
+    
+ROTATE	
+    MOVF    PIECE_TYPE,W
+    ANDLW   0x03
+    XORLW   0x03	    ;1 xor 1 is 0, so if all 2 low bits are 1 then
+    BTFSC   STATUS,Z	    ; i need to reset to 0, otherwise if 0 is clear
+    GOTO    ROTATION_RESET  ;just add 1
+    
+    INCF    PIECE_TYPE,F    ;
+    CALL    GET_PIECE
+    RETLW   0x00
+    
+    ROTATION_RESET
+    MOVF    PIECE_TYPE,W    ;Get the number and and it with all but 2 lowest
+    ANDLW   0xFC	    ;Put back where it came from
+    MOVWF   PIECE_TYPE
+    CALL    GET_PIECE
+    RETLW   0x00
+LEFT	
+    MOVF    LAST_POS_X,F
+    BTFSS   STATUS,Z
+    DECF    LAST_POS_X,F
+    RETLW   0x00
+DOWN	
+    RETLW   0x00
+RIGHT
+    MOVF    LAST_POS_X,W
+    XORLW   0x07
+    BTFSS   STATUS,Z
+    INCF    LAST_POS_X,F
+    RETLW   0x00
+
+
+
+RANDOM       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
+             IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
+             BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
+             COMF   hiB,F                  
+             MOVLW  0x80                 ; We want to XOR hiB.7, hiB.6, hiB.4
+             BTFSC  hiB,d'6'             ; and lowB.3 together in W. Rather than
+             XORWF  hiB,F                  ; try to line up these bits, we just
+             BTFSC  hiB,d'4'             ; check to see whether a bit is a 1. If it
+             XORWF  hiB ,F                 ; is, XOR 80h into hiB. If it isn't,
+             BTFSC  lowB,d'3'            ; do nothing. When we're done, the
+             XORWF  hiB,F                  ; XOR of the 4 bits will be in hiB.7.
+             RLF    hiB,W                  ; Move hiB.7 into carry. 
+             RLF    lowB,F                   ; Rotate c into lowB.0, lowB.7 into c. 
+             RLF    hiB,F                    ; Rotate c into hiB.0. 
+	     MOVF   lowB,W
+             RETURN
+	     
+REVERSE_BYTE
+    MOVWF   REVERSE_TEMP
+    MOVLW   0x08
+    MOVWF   REVERSE_COUNT
+    REVERSE_LOOP
+	RRF	    REVERSE_TEMP,F
+	RLF	    REVERSE_RET,F
+	DECFSZ  REVERSE_COUNT,F
+	GOTO REVERSE_LOOP
+    MOVF    REVERSE_RET,W
+    RETURN
+    
+    
+GET_GREEN
+    MOVWF   TABLE_TEMPORAL	;PUT INDEX OUT OF WAY
+    MOVLW   HIGH COLORS_GREEN	;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		;SET PAG
+    MOVF    TABLE_TEMPORAL,W	;RECOVER INDEX
+    ANDLW   MAX_COLORS		;GET MAX 16
+    ADDLW   COLORS_GREEN	;ADD LOW
+    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+GET_RED
+    MOVWF   TABLE_TEMPORAL	;PUT INDEX OUT OF WAY
+    MOVLW   HIGH COLORS_RED	;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		;SET PAGE
+    MOVF    TABLE_TEMPORAL,W	;RECOVER INDEX
+    ANDLW   MAX_COLORS		;GET MAX 16
+    ADDLW   COLORS_RED		;ADD LOW
+    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+GET_BLUE
+    MOVWF   TABLE_TEMPORAL	;PUT INDEX OUT OF WAY
+    MOVLW   HIGH COLORS_BLUE	;GET HIGH PART OF TABLE
+    MOVWF   PCLATH		;SET PAGE
+    MOVF    TABLE_TEMPORAL,W	;RECOVER INDEX
+    ANDLW   MAX_COLORS		;GET MAX 16
+    ADDLW   COLORS_BLUE		;ADD LOW
+    BTFSC   STATUS,C		;CHECK IF ROLLOVER, 1 MAX, table size 256 (0-255)
+    INCF    PCLATH,F
+    MOVWF   PCL
+    
+        
 MAIN_PROG CODE                      ; let linker place main program
 
 START
@@ -687,31 +711,49 @@ START
     MOVLW   0x00
     MOVWF   PIECE_TYPE
     
+    ;FINISHED INITIALIZING, START PROGRAM
+    START_GAME
+	BCF	STATUS,RP1		    ;FORCE BANK 0
+	BCF	STATUS,RP0
+	MOVLW	TITLE_SIZE
+	MOVWF	TEMP_STATE
+	
+	TITLE_PRINT_LOOP
+	    MOVF    TEMP_STATE,W
+	    CALL    GET_TITLE
+	    MOVWF   LAST_STATE
+	    RLF	    TEMP_STATE,W
+	    ADDLW   B0
+	    MOVWF   FSR
+	    MOVF    LAST_STATE,W
+	    BTFSC   FSR,1
+	    CALL    REVERSE_BYTE
+	    MOVWF   INDF
+	    INCF    FSR,F
+	    CALL    RANDOM
+	    MOVWF   INDF
+	    DECFSZ  TEMP_STATE,F
+	    GOTO    TITLE_PRINT_LOOP
+	    
+	CALL	PRINT_SCREEN
+	MOVF	PORTB,W
+	XORLW	0xF0
+	BTFSC	STATUS,Z
+	GOTO START_GAME
+    
+    
+    ;MAIN LOOP
     LOGIC_LOOP
 	BSF	PORTC,RC6	   
 	BCF	PORTC,RC6
 	
-	;KEEP ALIVE ON BANK 0
-	BCF	STATUS,RP1		    ;FORCE BANK 0
-	BCF	STATUS,RP0
-	MOVLW	0x0F
-	MOVWF	B31
-	CALL	RANDOM
-	MOVWF	C31
-
 	;STUFF
 	CALL	PRINT_SCREEN
-	CALL	GET_PIECE
-	CALL	PRINT_PIECE
 	
 	;READ BUTTONS BEFORE LEAVING BANK 0
 	MOVF	PORTB,W
 	XORLW	0xF0
 	MOVWF	TEMP_STATE
-	
-	;LOGIC ON BANK 1 BECAUSE NOT DIRECT ACCESS
-	BCF	STATUS,RP1		    ;FORCE BANK 1
-	BSF	STATUS,RP0
 	
 	;BUTTON MANAGMENT
 	;COULD MAYBE BE REDUCED
@@ -771,22 +813,26 @@ START
 	BCF	STATUS,RP1		    ;FORCE BANK 0
 	BCF	STATUS,RP0
 	
-	MOVF	PIECE_TYPE,W
-	MOVWF	B30
-	MOVF	LAST_POS_Y,W
-	SUBLW	.28
-	MOVF	STATUS,W
-	CALL	REVERSE_BYTE
-	MOVWF	B29
-	MOVF	LAST_POS_Y,W
-	SUBLW	.28
-	BTFSS	STATUS,C
-	MOVLW	0xF0
-	MOVWF	B28
+	;MOVF	PIECE_TYPE,W
+	;MOVWF	B30
+	;MOVF	LAST_POS_Y,W
+	;SUBLW	.28
+	;MOVF	STATUS,W
+	;CALL	REVERSE_BYTE
+	;MOVWF	B29
+	;MOVF	LAST_POS_Y,W
+	;SUBLW	.28
+	;BTFSS	STATUS,C
+	;MOVLW	0xF0
+	;MOVWF	B28
 	;END DEBUG
 	
 	END_LOGIC
 	MOVF	TEMP_STATE,W
 	MOVWF	LAST_STATE
 	GOTO LOGIC_LOOP
+;WHEN LOST
+LOST_GAME
+GOTO	START_GAME
+
 END                                                   
