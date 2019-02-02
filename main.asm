@@ -282,12 +282,14 @@ PRINT_SCREEN			    ; Only works on bank 0 or 2
     RETURN
 
 ;CONSTANTS
-PATTERN equ B'00000001'
-SIZE_COL    equ .32
-SIZE_B	    equ .8
-MAX_COLORS  equ	0x0F		    ;0-15 = 16 colors MASQUING LOGIC
+PATTERN		equ B'00000001'
+SIZE_COL	equ .32
+PLAYABLE_COLS   equ .24
+SIZE_B		equ .8
+MAX_COLORS	equ 0x0F		    ;0-15 = 16 colors MASQUING LOGIC
 ARRAY_START	equ 0x20
-BANK2	    equ 0x80
+BANK1		equ 0x80
+DROP_AMOUNT	equ .20
 ;SECTION JUST USED WHEN PRINTING
 ;MAY BE REUSED ONLY FOR TEMPORAL USE
 COLUMN_INDEX	equ 0x60
@@ -328,13 +330,30 @@ PIECE_TYPE  equ	0x76
 hiB	    equ 0x75
 lowB	    equ 0x74
 TEMP_REG    equ	0x73
-PRINT_REG   equ	0x72
+OP_REG	    equ	0x72
 DROP_COUNT  equ	0x71	; 
 LEVEL	    equ	0x70	; CURRENT_LEVEL
 	    
-;COMMONS LOCALS
+;COMMONS LOCALS MUST NOT OVERWRITE
 TEMP_STATE  equ 0x6F
-DROP_AMOUNT equ	.20
+SCORE_L	    equ 0x6E
+SCORE_M	    equ 0x6D
+SCORE_H	    equ 0x6C
+	    
+;ROTATION
+ROTATION_T  equ 0x6B
+  
+;REGISTERS USED WHEN PLACING PIECE AND CLEARING LINES
+CHECK_TEMP  equ	0x6B  
+CLEAR_TEMP  equ	0x6A
+CLEAR_INDX  equ	0x69
+
+CLEAR_T3    equ	0x68
+CLEAR_T2    equ	0x67
+CLEAR_T1    equ	0x66
+CLEAR_T0    equ	0x65
+	    
+
     
 ; BANK 1 MAPS, LOGIC ONLY    
   
@@ -471,6 +490,7 @@ GET_PIECE
     CALL    GET_PIECE_START	;WHERE IT STARTS
     MOVWF   PIECE_START		
     
+    
     MOVLW   PIECE_0
     MOVWF   FSR
     
@@ -505,17 +525,18 @@ PRINT_PIECE
 	MOVF	PIECE_TEMP,W
 	BTFSC	FSR,1
 	CALL	REVERSE_BYTE
-	BTFSS	PRINT_REG,0	;if bit 0
+	BTFSS	OP_REG,0	;if bit 0
 	IORWF	INDF,F		;INSTEAD of moving we inclusive or them
 				;Collisions are check at other place
-	BTFSC	PRINT_REG,0
+	BTFSC	OP_REG,0
 	XORWF	INDF,F		;So if we XOR with an already placed piece it 
 				;gets removed
 	
 	DECFSZ	SIZE_TEMP,F
 	GOTO	PRINT_PIECE_LOOP
     RETURN
-    
+
+;Piece interactions on collision map
 COLLISION_PIECE	
     MOVF    PIECE_SIZE,W
     MOVWF   SIZE_TEMP
@@ -530,18 +551,19 @@ COLLISION_PIECE
 	;MOVE TO MEMORY WHERE NEEDED
 	MOVF	LAST_POS_Y,W
 	ADDWF	SIZE_TEMP,W
-	MOVWF	PIECE_INTER
-	RLF	PIECE_INTER,W
-	ADDLW	B0-2
+	ADDLW	B0-1
 	MOVWF	FSR
-	MOVF	PIECE_TEMP,W
-	BTFSC	FSR,1
-	CALL	REVERSE_BYTE
-	BTFSS	PRINT_REG,0
-	ANDWF	INDF,F		;INSTEAD of moving we inclusive or them
-				;Collisions are check at other place
-	BTFSS	STATUS,Z
-	RETLW	0xFF
+	MOVF	PIECE_TEMP,W	
+	BTFSC	OP_REG,0	;if bit not 0
+	GOTO	COLLISION_CHECK	;go to collision check
+	IORWF	INDF,F		;INSTEAD of moving we inclusive or them
+	GOTO	COLLISON_END
+	COLLISION_CHECK
+	ANDWF	INDF,F		;AND to check for collision
+				;gets removed
+	BTFSS	STATUS,Z	; if no collision no bit set, so Z set
+	RETLW	0xFF		; if collision return NON ZERO, no matter where
+        COLLISON_END
 	
 	DECFSZ	SIZE_TEMP,F
 	GOTO	COLLISION_PIECE_LOOP
@@ -549,6 +571,21 @@ COLLISION_PIECE
 
 SPAWN_PIECE
     RETURN  ;;TODO
+    
+UNROTATE
+    MOVF    PIECE_TYPE,W
+    ANDLW   0x03
+    BTFSC   STATUS,Z	    ; i need to reset to 0, otherwise if 0 is clear
+    GOTO    UNROTATE_RESET  ;just add 1
+    
+    DECF    PIECE_TYPE,F    ;
+    GOTO    ROTATE_GET
+    
+    UNROTATE_RESET
+    MOVF    PIECE_TYPE,W    ;Get the number and and it with all but 2 lowest
+    XORLW   0x03	    ;Put back where it came from
+    MOVWF   PIECE_TYPE
+    GOTO    ROTATE_GET
     
 ROTATE	
     MOVF    PIECE_TYPE,W
@@ -581,10 +618,6 @@ ROTATE
 	GOTO	ROTATION_POS_RESET
     
     RETLW   0x00
-	
-    MOVF    LAST_POS_X,F
-    BTFSC   STATUS,Z
-    RETLW   0x00
     
 RIGHT	
     MOVF    LAST_POS_X,F
@@ -594,7 +627,7 @@ RIGHT
     MOVF    PIECE_SIZE,W
     MOVWF   SIZE_TEMP
     RIGHT_LOOP
-	MOVLW	BANK2+PIECE_0-1
+	MOVLW	BANK1+PIECE_0-1
 	ADDWF	SIZE_TEMP,W
 	MOVWF	FSR
 	RRF	INDF,F
@@ -624,7 +657,7 @@ LEFT
     MOVF    PIECE_SIZE,W
     MOVWF   SIZE_TEMP
     LEFT_LOOP
-	MOVLW	BANK2+PIECE_0-1
+	MOVLW	BANK1+PIECE_0-1
 	ADDWF	SIZE_TEMP,W
 	MOVWF	FSR
 	RLF	INDF,F
@@ -645,25 +678,132 @@ CHECK_BUTTON
     BTFSS   STATUS,Z
     RETLW   0xFF
     RETLW   0x00
+    
+SET_PIECE
+    ;SET COLLISION UNTIL DELETED
+    BCF	    OP_REG,0
+    CALL    COLLISION_PIECE
+    
+    ;GO BACK TO BANK 0 AND SET PIECE PERMANENTLY ON SCREEN
+    BCF	    STATUS,RP1		    
+    BCF	    STATUS,RP0
+    CALL    PRINT_PIECE
+    
+    ;CHECK IF ANY ROWS ARE COMPLETED
+    BCF	    STATUS,RP1		    
+    BSF	    STATUS,RP0
+    
+    GOTO	CHECK_ROWS
+    RETURN_CHECK_ROWS
+    
+    ;GET NEXT PIECE
+    CALL    RANDOM
+    MOVWF   PIECE_TYPE
+    CALL    GET_PIECE
+    ;RESET BACK TO WHERE WE STARTED
+    BCF	    STATUS,RP1		    
+    BSF	    STATUS,RP0
+    BSF	    OP_REG,0
+    RETLW   0x00
 
+CHECK_ROWS    
+    MOVLW   PLAYABLE_COLS
+    MOVWF   CHECK_TEMP
+    CHECK_ROWS_LOOP
+	MOVF	CHECK_TEMP,W
+	ADDLW	BANK1+B0
+	MOVWF	FSR
+	MOVLW	0xFF
+	XORWF	INDF,W
+	BTFSC	STATUS,0
+	GOTO	CLEAR_COLLISION
+	RETURN_CLEAR_COLLISION
+	INCF	FSR,F
+	DECFSZ	CHECK_TEMP,F
+	GOTO	CHECK_ROWS_LOOP
+    GOTO    RETURN_CHECK_ROWS
+    
+CLEAR_COLLISION
+    MOVF    CHECK_TEMP,W
+    MOVWF   CLEAR_INDX
+    
+    MOVLW   PLAYABLE_COLS
+    MOVWF   CLEAR_TEMP
+    MOVF    CHECK_TEMP,W
+    SUBWF   CLEAR_TEMP,F    ;PLAYABLE_COLS - current position, to loop from down up
+    CLEAR_COLLISION_LOOP
+	MOVF	CLEAR_INDX,W	;GET CURRENT POSITION
+	ADDLW	BANK1+B0+0x01	;GET SECOND OVER, ON BANK1
+	MOVWF	FSR		;SET POINTER
+	MOVF	INDF,W		
+	MOVWF	CLEAR_T0
+	ADDLW	-1		;GO BACK TO ORIGINAL POSITION
+	MOVF	CLEAR_T0,W
+	MOVWF	INDF
+	
+	INCF	CLEAR_INDX,F
+	DECFSZ	CLEAR_TEMP
+	GOTO	CLEAR_COLLISION_LOOP
+	
+    CLRF    INDF
+    GOTO    CLEAR_VISUAL
+    
+CLEAR_VISUAL
+    BCF	STATUS,RP1		    ;FORCE BANK 0
+    BCF	STATUS,RP0
+    
+    MOVF    CHECK_TEMP,W
+    MOVWF   CLEAR_INDX
+    
+    MOVLW   PLAYABLE_COLS
+    MOVWF   CLEAR_TEMP
+    MOVF    CHECK_TEMP,W
+    SUBWF   CLEAR_TEMP,F    ;PLAYABLE_COLS - current position, to loop from down up
+    CLEAR_VISUAL_LOOP
+	MOVF	CLEAR_INDX,W	;GET CURRENT POSITION
+	ADDLW	B0+0x02		;GET SECOND OVER, THE ACTUAL COLUMN
+	MOVWF	FSR		;SET POINTER
+	MOVF	INDF,W		
+	MOVWF	CLEAR_T0
+	ADDLW	-2		;GO BACK TO ORIGINAL POSITION
+	MOVF	CLEAR_T0,W
+	MOVWF	INDF
+	
+	INCF	CLEAR_INDX,F
+	DECFSZ	CLEAR_TEMP
+	GOTO	CLEAR_VISUAL_LOOP
+	
+    CLRF    INDF
+    
+    BCF	    STATUS,RP1		    ;FORCE BANK 1
+    BSF	    STATUS,RP0
+    
+    GOTO    RETURN_CLEAR_COLLISION
 
-RANDOM       MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
-             IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
-             BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
-             COMF   hiB,F                  
-             MOVLW  0x80                 ; We want to XOR hiB.7, hiB.6, hiB.4
-             BTFSC  hiB,d'6'             ; and lowB.3 together in W. Rather than
-             XORWF  hiB,F                  ; try to line up these bits, we just
-             BTFSC  hiB,d'4'             ; check to see whether a bit is a 1. If it
-             XORWF  hiB ,F                 ; is, XOR 80h into hiB. If it isn't,
-             BTFSC  lowB,d'3'            ; do nothing. When we're done, the
-             XORWF  hiB,F                  ; XOR of the 4 bits will be in hiB.7.
-             RLF    hiB,W                  ; Move hiB.7 into carry. 
-             RLF    lowB,F                   ; Rotate c into lowB.0, lowB.7 into c. 
-             RLF    hiB,F                    ; Rotate c into hiB.0. 
-	     MOVF   lowB,W
-             RETURN
+RANDOM       
+    MOVF   hiB,W                 ; First, ensure that hiB and lowB aren't
+    IORWF  lowB,W               ; all zeros. If they are, NOT hiB to FFh.
+    BTFSC  STATUS,Z             ; Otherwise, leave hiB and lowB as is.
+    COMF   hiB,F                  
+    MOVLW  0x80                 ; We want to XOR hiB.7, hiB.6, hiB.4
+    BTFSC  hiB,d'6'             ; and lowB.3 together in W. Rather than
+    XORWF  hiB,F                  ; try to line up these bits, we just
+    BTFSC  hiB,d'4'             ; check to see whether a bit is a 1. If it
+    XORWF  hiB ,F                 ; is, XOR 80h into hiB. If it isn't,
+    BTFSC  lowB,d'3'            ; do nothing. When we're done, the
+    XORWF  hiB,F                  ; XOR of the 4 bits will be in hiB.7.
+    RLF    hiB,W                  ; Move hiB.7 into carry. 
+    RLF    lowB,F                   ; Rotate c into lowB.0, lowB.7 into c. 
+    RLF    hiB,F                    ; Rotate c into hiB.0. 
+    MOVF   lowB,W
+    RETURN
 	     
+RESET_DROP
+    MOVLW   LEVEL
+    SUBWF   DROP_AMOUNT
+    MOVWF   DROP_COUNT
+    RETLW   0x00
+
 REVERSE_BYTE
     MOVWF   REVERSE_TEMP
     MOVLW   0x08
@@ -761,15 +901,18 @@ START
     ;Initialize logic
     BCF	STATUS,RP1		    ;FORCE BANK 0
     BCF	STATUS,RP0
-	
+    
+    ;SET VARIABLES TO INITIAL STATE
     MOVLW   0x00
     MOVWF   LAST_POS_X
-    MOVLW   0x10
+    MOVLW   PLAYABLE_COLS
     MOVWF   LAST_POS_Y
 
+    ;SET default last state
     MOVLW   0xF0
     MOVWF   LAST_STATE
-    MOVLW   0x01
+    ;GENERATE RANDOM PIECE
+    CALL    RANDOM
     MOVWF   PIECE_TYPE
     
     ;FINISHED INITIALIZING, START PROGRAM
@@ -819,56 +962,128 @@ START
 	DECFSZ	CURRENT_COLUMN,F    ; DECREASE RAM COUNTER TO SELF
 	GOTO	CLEAR_SCREEN
 	
+    BCF	STATUS,RP1		    ;FORCE BANK 0
+    BCF	STATUS,RP0
+    
     CALL    GET_PIECE
-    BCF	    PRINT_REG,0
+    BCF	    OP_REG,0
     CALL    PRINT_PIECE
     ;MAIN LOOP
     LOGIC_LOOP
 	BSF	PORTC,RC6	   
 	BCF	PORTC,RC6
 	
-	;STUFF
+	;SCREEN SET
+	BCF	STATUS,RP1		    ;FORCE BANK 0
+	BCF	STATUS,RP0
 	CALL	PRINT_SCREEN
 	
 	;READ BUTTONS BEFORE LEAVING BANK 0
 	MOVF	PORTB,W
-	XORLW	0xF0
+	XORLW	0xF0			    ;RC7,RC6,RC5,RC4
 	MOVWF	TEMP_STATE
-	;BEFORE ANY CHANGE ERASE OLD PIECE
-	BSF	PRINT_REG,0
+	BSF	OP_REG,0		    ;BEFORE ANY CHANGE ERASE OLD PIECE
 	CALL	PRINT_PIECE
 	
+	;CHANGE BANK
 	MOVF	TEMP_STATE,W
-	BCF	STATUS,RP1		    ;FORCE BANK 0
+	BCF	STATUS,RP1		    ;FORCE BANK 1
 	BSF	STATUS,RP0
 	MOVWF	TEMP_STATE
 	
+	
+	BSF	OP_REG,0		    ;COLLISION PIECE CHECK COLLISION
+	
 	;BUTTON MANAGMENT
+	
+	;ROTATION BUTTON
 	MOVLW	0x80
 	CALL	CHECK_BUTTON
-	BTFSS	STATUS,Z
+	BTFSC	STATUS,Z
+	GOTO	BRC6
+	;REMEMBER POSITION BECAUSE WITH ROTATION MAY CHANGE BECAUSE OF WIDTH
+	CALL	RESET_DROP	;SET TIMER TO 0
+	MOVF	LAST_POS_X,W	;STORE TEMP THE X POSTION BECAUSE WIDTH CHANGE
+	MOVWF	ROTATION_T
 	CALL	ROTATE
+	CALL	COLLISION_PIECE
+	BTFSC	STATUS,Z
+	GOTO	BRC6
+	;IF ROTATION UNSUCSESSFUL
+	MOVF	ROTATION_T,W
+	MOVWF	LAST_POS_X
+	CALL	UNROTATE
 	
+	
+	BRC6
+	;LEFT BUTTON
 	MOVLW	0x40
 	CALL	CHECK_BUTTON
+	XORLW	0xFF
 	BTFSS	STATUS,Z
+	GOTO	BRC5
 	CALL	RIGHT
+	CALL	COLLISION_PIECE
+	XORLW	0xFF
+	BTFSS	STATUS,Z
+	GOTO	BRC5
+	CALL	LEFT
 	
+	BRC5
+	;DOWN BUTTON
 	MOVLW	0x20
 	CALL	CHECK_BUTTON
+	XORLW	0xFF
 	BTFSS	STATUS,Z
-	CALL	DOWN
+	GOTO	BRC4
+	CALL	DOWN		    ;RETURNS 0xFF at bottom,Z=0
+	XORLW	0xFF
+	BTFSS	STATUS,Z	    ;execute if Z=1
+	CALL	COLLISION_PIECE	    ;RETURNS 0xFF at collision
+	XORLW	0xFF
+	BTFSS	STATUS,Z	    ;execute if Z=1
+	GOTO	BRC4
+	CALL	UP
+	CALL	SET_PIECE
 	
+	BRC4
+	;RIGHT BUTTON
 	MOVLW	0x10
 	CALL	CHECK_BUTTON
+	XORLW	0xFF
 	BTFSS	STATUS,Z
+	GOTO	BEND
 	CALL	LEFT
+	CALL	COLLISION_PIECE
+	XORLW	0xFF
+	BTFSS	STATUS,Z
+	GOTO	BEND
+	CALL	RIGHT
+	
+	BEND
+	
+;	;GLOBAL COUNTER PULLING DOWN PIECES
+;	DECFSZ	DROP_COUNT
+;	GOTO	END_DROP_PIECE
+;	
+;	;DOWN BUTTON CODE
+;	CALL	DOWN		    ;RETURNS 0xFF at bottom,Z=0
+;	BTFSC	STATUS,Z	    ;execute if Z=1
+;	CALL	COLLISION_PIECE	    ;RETURNS 0xFF at collision
+;	BTFSC	STATUS,Z	    ;execute if Z=1
+;	GOTO	BRC4
+;	CALL	UP
+;	CALL	SET_PIECE
+;	
+;	
+;	END_DROP_PIECE
+;	
 	
 	BCF	STATUS,RP1		    ;FORCE BANK 0
 	BCF	STATUS,RP0
 	
 	
-	BCF	PRINT_REG,0
+	BCF	OP_REG,0
 	CALL	PRINT_PIECE
 	
 	;DEBUG
@@ -877,16 +1092,6 @@ START
 	MOVF	LAST_STATE,W
 	CALL	REVERSE_BYTE
 	MOVWF	B29
-	;MOVF	LAST_POS_Y,W
-	;SUBLW	.28
-	;MOVF	STATUS,W
-	;CALL	REVERSE_BYTE
-	;MOVWF	B29
-	;MOVF	LAST_POS_Y,W
-	;SUBLW	.28
-	;BTFSS	STATUS,C
-	;MOVLW	0xF0
-	;MOVWF	B28
 	;END DEBUG
 	
 	END_LOGIC
