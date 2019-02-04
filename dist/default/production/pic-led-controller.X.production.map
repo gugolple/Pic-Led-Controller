@@ -1,13 +1,13 @@
 MPLINK 5.09, LINKER
-Linker Map File - Created Sun Feb  3 23:04:42 2019
+Linker Map File - Created Mon Feb  4 00:24:23 2019
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                  RES_VECT       code   0x000000    program   0x000004
                    .cinit    romdata   0x000002    program   0x000004
-              Int_Handler       code   0x000004    program   0x0005aa
-                MAIN_PROG       code   0x0002d9    program   0x000196
+              Int_Handler       code   0x000004    program   0x0005b2
+                MAIN_PROG       code   0x0002dd    program   0x00019c
 .config_2007_BUILD/DEFAULT/PRODUCTION/MAIN.O       code   0x002007    program   0x000002
 
 
@@ -15,33 +15,33 @@ Linker Map File - Created Sun Feb  3 23:04:42 2019
                               Program Memory Usage 
                                Start         End      
                            ---------   ---------      
-                            0x000000    0x0003a3      
+                            0x000000    0x0003aa      
                             0x002007    0x002007      
-            933 out of 4359 program addresses used, program memory utilization is 21%
+            940 out of 4359 program addresses used, program memory utilization is 21%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                     BEND   0x000395    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BEND   0x00039c    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
           BLOCK_ROTATIONS   0x000103    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
               BLOCK_SIZES   0x000147    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
              BLOCK_STARTS   0x00017f    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
               BLOCK_WIDTH   0x000163    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                 BLUE_LOOP   0x0000c0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BRC4   0x000378    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BRC5   0x000383    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BRC6   0x00036d    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BRC7   0x00035e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BRC4   0x00037e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BRC5   0x000389    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BRC6   0x000373    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BRC7   0x000364    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
              CHECK_BUTTON   0x00026a    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               CHECK_ROWS   0x000285    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-          CHECK_ROWS_LOOP   0x000287    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-          CLEAR_COLLISION   0x000292    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-     CLEAR_COLLISION_LOOP   0x000298    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-             CLEAR_SCREEN   0x00033a    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-             CLEAR_VISUAL   0x0002a5    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-        CLEAR_VISUAL_LOOP   0x0002ad    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               CHECK_ROWS   0x000289    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+          CHECK_ROWS_LOOP   0x00028b    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+          CLEAR_COLLISION   0x000296    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+     CLEAR_COLLISION_LOOP   0x00029c    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+             CLEAR_SCREEN   0x00033e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+             CLEAR_VISUAL   0x0002a9    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+        CLEAR_VISUAL_LOOP   0x0002b1    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
           COLLISION_CHECK   0x000220    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
           COLLISION_PIECE   0x000210    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
      COLLISION_PIECE_LOOP   0x000212    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
@@ -52,7 +52,7 @@ Linker Map File - Created Sun Feb  3 23:04:42 2019
                COLUMN_BIT   0x00003c    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
               COLUMN_LOOP   0x000034    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                      DOWN   0x000252    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                END_LOGIC   0x0003a0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                END_LOGIC   0x0003a7    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                GAME_TITLE   0x00019b    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                  GET_BLUE   0x000017    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                 GET_GREEN   0x000005    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
@@ -66,28 +66,28 @@ Linker Map File - Created Sun Feb  3 23:04:42 2019
                 GET_TITLE   0x0001b9    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                 GET_WIDTH   0x0001c9    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                GREEN_LOOP   0x000062    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               INITIALIZE   0x0002fc    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-        INITIALIZE_SECOND   0x00030a    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               INITIALIZE   0x000300    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+        INITIALIZE_SECOND   0x00030e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                      LEFT   0x000259    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                 LEFT_LOOP   0x000263    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               LOGIC_LOOP   0x00034b    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               LOGIC_LOOP   0x00034f    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
             LOOP_BLUE_END   0x0000c9    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
           LOOP_BLUE_SHORT   0x0000c7    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
            LOOP_GREEN_END   0x00006b    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
          LOOP_GREEN_SHORT   0x000069    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
              LOOP_RED_END   0x00009a    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
            LOOP_RED_SHORT   0x000098    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                LOST_GAME   0x0003a3    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                LOST_GAME   0x0003aa    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
               PRINT_PIECE   0x0001f9    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
          PRINT_PIECE_LOOP   0x0001fb    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
              PRINT_SCREEN   0x000020    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                   RANDOM   0x0002bc    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                   RANDOM   0x0002c0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                  RED_LOOP   0x000091    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               RESET_DROP   0x0002cc    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               RESET_DROP   0x0002d0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
         RETURN_CHECK_ROWS   0x00027e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-   RETURN_CLEAR_COLLISION   0x00028e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-             REVERSE_BYTE   0x0002d0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-             REVERSE_LOOP   0x0002d3    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+   RETURN_CLEAR_COLLISION   0x000292    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+             REVERSE_BYTE   0x0002d4    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+             REVERSE_LOOP   0x0002d7    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                     RIGHT   0x000245    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                RIGHT_LOOP   0x00024b    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                    ROTATE   0x000231    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
@@ -96,15 +96,15 @@ Linker Map File - Created Sun Feb  3 23:04:42 2019
                SEND_RESET   0x00002e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
           SEND_RESET_HIGH   0x000029    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                 SET_PIECE   0x000276    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-           SET_PIECE_DOWN   0x000391    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+           SET_PIECE_DOWN   0x000397    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
               SPAWN_PIECE   0x000226    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                    START   0x0002d9    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               START_GAME   0x00031d    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-         TITLE_PRINT_LOOP   0x000321    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                    START   0x0002dd    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               START_GAME   0x000321    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+         TITLE_PRINT_LOOP   0x000325    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                  UNROTATE   0x000227    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
            UNROTATE_RESET   0x00022d    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                        UP   0x000257    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-            WAIT_START_UP   0x0002f2    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+            WAIT_START_UP   0x0002f6    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
 
 
 
@@ -165,32 +165,32 @@ Linker Map File - Created Sun Feb  3 23:04:42 2019
              CHECK_BUTTON   0x00026a    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
                 SET_PIECE   0x000276    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
         RETURN_CHECK_ROWS   0x00027e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               CHECK_ROWS   0x000285    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-          CHECK_ROWS_LOOP   0x000287    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-   RETURN_CLEAR_COLLISION   0x00028e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-          CLEAR_COLLISION   0x000292    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-     CLEAR_COLLISION_LOOP   0x000298    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-             CLEAR_VISUAL   0x0002a5    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-        CLEAR_VISUAL_LOOP   0x0002ad    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                   RANDOM   0x0002bc    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               RESET_DROP   0x0002cc    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-             REVERSE_BYTE   0x0002d0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-             REVERSE_LOOP   0x0002d3    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                    START   0x0002d9    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-            WAIT_START_UP   0x0002f2    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               INITIALIZE   0x0002fc    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-        INITIALIZE_SECOND   0x00030a    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               START_GAME   0x00031d    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-         TITLE_PRINT_LOOP   0x000321    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-             CLEAR_SCREEN   0x00033a    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-               LOGIC_LOOP   0x00034b    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BRC7   0x00035e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BRC6   0x00036d    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BRC4   0x000378    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BRC5   0x000383    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-           SET_PIECE_DOWN   0x000391    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                     BEND   0x000395    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                END_LOGIC   0x0003a0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
-                LOST_GAME   0x0003a3    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               CHECK_ROWS   0x000289    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+          CHECK_ROWS_LOOP   0x00028b    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+   RETURN_CLEAR_COLLISION   0x000292    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+          CLEAR_COLLISION   0x000296    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+     CLEAR_COLLISION_LOOP   0x00029c    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+             CLEAR_VISUAL   0x0002a9    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+        CLEAR_VISUAL_LOOP   0x0002b1    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                   RANDOM   0x0002c0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               RESET_DROP   0x0002d0    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+             REVERSE_BYTE   0x0002d4    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+             REVERSE_LOOP   0x0002d7    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                    START   0x0002dd    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+            WAIT_START_UP   0x0002f6    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               INITIALIZE   0x000300    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+        INITIALIZE_SECOND   0x00030e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               START_GAME   0x000321    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+         TITLE_PRINT_LOOP   0x000325    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+             CLEAR_SCREEN   0x00033e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+               LOGIC_LOOP   0x00034f    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BRC7   0x000364    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BRC6   0x000373    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BRC4   0x00037e    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BRC5   0x000389    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+           SET_PIECE_DOWN   0x000397    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                     BEND   0x00039c    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                END_LOGIC   0x0003a7    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
+                LOST_GAME   0x0003aa    program     static /home/gugo/MPLABXProjects/pic-led-controller.X/main.asm
 
 
